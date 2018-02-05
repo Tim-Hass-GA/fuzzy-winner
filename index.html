@@ -9,21 +9,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
   <body>
-    <header>
-      <div class="container flow-text black">
-        <div class="row section">
+    <header class="#78909c blue-grey lighten-1 white-text flow-text">
+      <div class="container black">
+        <div class="row">
           <!-- <div class=""> -->
-            <div id="player_1" class="col s4 l4 left game_info">
+            <div id="player_1" class="col s4 m4 left game_info">
               <p class="player_1">Player 1</p>
               <p>Score: 0</p>
               <p>High Score: 0</p>
             </div>
           <!-- </div> -->
           <!-- <div class=""> -->
-            <div class="col s4 l4 game_controls game_info ">
+            <div class="col s4 m4 game_controls game_info">
               <button type="button" id="new_game" class="waves-effect waves-light btn">New Game</button>
               <!-- Switch -->
               <div class="switch">
@@ -38,7 +39,7 @@
             </div>
           <!-- </div> -->
           <!-- <div class=""> -->
-            <div id="player_2" class="col s4 l4 right game_info ">
+            <div id="player_2" class="col s4 m4 right game_info">
               <p class="player_2">Player 2</p>
               <p>Score: 0</p>
               <p>High Score: 0</p>
@@ -56,20 +57,43 @@
         </div>
       </div>
     </main>
-    <footer class="page-footer black">
+    <footer class="page-footer #78909c blue-grey lighten-1 white-text ">
       <div class="container">
         <div class="row">
-          <div class="col s2 l1">
-            <p class="flow-text"><span id="about">About</span></p>
+          <div class="col s2 ">
+            <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn-flat modal-trigger" href="#modal1"><span class="about bold">About</span></a>
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal bottom-sheet">
+              <div class="modal-content black">
+                <h4>About the Game</h4>
+                <ul>
+                  <li>Use the keyboard to move the player to the object.</li>
+                  <li>While in the "Safe Zone" click the object to "collect" the object.</li>
+                  <li>BECAREFUL not to run into objects you can pick up - GAME OVER.</li>
+                  <li>Take your "colleted" objects to the "proper disposal" area.</li>
+                  <li>BECAREFUL not to run into static objects, you may drop "collected" objects.</li>
+                  <li>10 points opens the next level.</li>
+                  <li>If the game gets 10 points the game wins.</li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Got it..!</a>
+              </div>
+            </div>
+            <!-- <p class="flow-text"></p> -->
           </div>
-          <div class="col s6 offset-s4 l11">
+          <div class="col s10">
             <div class="fixed-action-btn">
-              <a class="btn-floating btn-large red">
-                <i class="large material-icons">@</i>
+              <a class="btn-floating btn-large black">
+                <i class="large material-icons">contacts</i>
               </a>
               <ul>
-                <li><a class="btn-floating red"><i class="material-icons">Flickr</i></a></li>
-                <li><a class="btn-floating yellow darken-1"><i class="material-icons">Linkedin</i></a></li>
+                <li><a class="btn-floating red pulse"><i class="material-icons">photo_library</i></a></li>
+                <li><a class="btn-floating yellow darken-1 pulse"><i class="material-icons">smoke_free</i></a></li>
+                <li><a class="btn-floating green pulse"><i class="material-icons">beach_access</i></a></li>
+                <li><a class="btn-floating blue pulse"><i class="material-icons">info</i></a></li>
+                <li><a class="btn-floating black pulse"><i class="material-icons">directions_run</i></a></li>
               </ul>
             </div>
           </div>

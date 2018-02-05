@@ -4,26 +4,22 @@ html, body {
 }
 
 body {
-  /* display: flex;
-  min-height: 100vh;
-  flex-direction: column; */
+
 }
 
 header {
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
-  color: #fff;
 }
 
-header div p {
+header div p, footer div p {
   padding: 0 .25em .25em;
-  margin: 0 .5em  .5em;
+  margin: 0 auto;
 }
 
 .game_info {
-  display: inline-block;
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 .game_controls {
@@ -46,24 +42,25 @@ header div p {
 
 }
 
-main {
-  border: 1px solid;
-  margin: 0 1px 0;
+div .row {
+  /* border: 1px solid; */
+  padding: 1px;
+  /* margin: 0; */
+  width: 100%;
 }
 
 canvas {
   background-color: lightgreen;
 }
 
-footer {
-  border: 1px solid;
+footer .container {
+  /* border: 1px solid; */
   text-align: right;
-  /* background-color: #000;
-  color: #fff; */
-  /* padding-right: 1em; */
+  /* margin: 0; */
+  /* padding: 0 1em; */
 }
 
-#about {
+.about {
   font-weight: 800;
   font-size: 1.5em;
 }
