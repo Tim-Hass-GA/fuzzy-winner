@@ -3,23 +3,26 @@ html, body {
   padding: 0
 }
 
+body {
+  /* display: flex;
+  min-height: 100vh;
+  flex-direction: column; */
+}
+
 header {
   width: 95%;
   margin: 0 auto;
   text-align: center;
-  background-color: #000;
   color: #fff;
 }
 
-header div {
-
+header div p {
+  padding: 0 .25em .25em;
+  margin: 0 .5em  .5em;
 }
 
 .game_info {
   display: inline-block;
-  /* width: 90%; */
-  margin: 0 0 1em;
-  padding: 0 1em;
   border: 1px solid;
 }
 
@@ -29,7 +32,6 @@ header div {
 
 .player_1 {
   font-weight: 800;
-  font-size: 1.5em;
 }
 
 .left {
@@ -38,7 +40,6 @@ header div {
 
 .player_2 {
   font-weight: 800;
-  font-size: 1.5em;
 }
 
 .right {
@@ -47,6 +48,7 @@ header div {
 
 main {
   border: 1px solid;
+  margin: 0 1px 0;
 }
 
 canvas {
@@ -56,9 +58,9 @@ canvas {
 footer {
   border: 1px solid;
   text-align: right;
-  background-color: #000;
-  color: #fff;
-  padding-right: 1em;
+  /* background-color: #000;
+  color: #fff; */
+  /* padding-right: 1em; */
 }
 
 #about {

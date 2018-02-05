@@ -53,6 +53,12 @@ var ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+window.addEventListener("resize", function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // init();
+});
+
 
 var GameBoard = {
   name: "Pooper Scooper",
