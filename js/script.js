@@ -1,8 +1,6 @@
 console.log("js is here");
 
-// Tim Hass
-// Feb 2018
-// GA - Project 1
+// Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
 
 // Game Name: Pooper Scooper
@@ -46,6 +44,15 @@ console.log("js is here");
 // extensions
 // playBall
 //
+
+// bring in the canvas object
+
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 
 var GameBoard = {
   name: "Pooper Scooper",
@@ -157,12 +164,7 @@ var Obstacle = {
   }
 }
 
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+// document ready statement
 $(document).ready(function(){
 
   canvas.addEventListener("click", function(event) {

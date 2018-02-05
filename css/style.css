@@ -1,44 +1,67 @@
-html,body {
+html, body {
   margin: 0;
   padding: 0
 }
 
 header {
+  width: 95%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+}
+
+header div {
 
 }
 
-main {
-
-}
-
-canvas {
-
-}
-
-footer {
-
+.game_info {
+  display: inline-block;
+  /* width: 90%; */
+  margin: 0 0 1em;
+  padding: 0 1em;
+  border: 1px solid;
 }
 
 .game_controls {
 
 }
 
-#player1 {
-
+.player_1 {
+  font-weight: 800;
+  font-size: 1.5em;
 }
 
 .left {
 
 }
-  
-#player2 {
 
+.player_2 {
+  font-weight: 800;
+  font-size: 1.5em;
 }
 
 .right {
 
 }
 
-/* #canvas {
+main {
+  border: 1px solid;
+}
 
-} */
+canvas {
+  background-color: lightgreen;
+}
+
+footer {
+  border: 1px solid;
+  text-align: right;
+  background-color: #000;
+  color: #fff;
+  padding-right: 1em;
+}
+
+#about {
+  font-weight: 800;
+  font-size: 1.5em;
+}

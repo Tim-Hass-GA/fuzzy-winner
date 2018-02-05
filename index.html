@@ -7,15 +7,17 @@
     <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
   <body>
-    <header class="game_info">
-      <div id="player_1" class="left">
+    <header>
+      <div id="player_1" class="left game_info">
+        <p class="player_1">Player 1</p>
         <p>Score: 0</p>
         <p>High Score: 0</p>
       </div>
-      <div class="game_controls">
+      <div class="game_controls game_info">
         <p>game controls placeholder</p>
       </div>
-      <div id="player_2" class="right">
+      <div id="player_2" class="right game_info">
+        <p class="player_2">Player 2</p>
         <p>Score: 0</p>
         <p>High Score: 0</p>
       </div>
@@ -23,7 +25,7 @@
     <main>
       <canvas id="canvas"></canvas>
     </main>
-    <footer>put the footer here</footer>
+    <footer><span id="about">About</span> <p>put the footer here</p></footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
