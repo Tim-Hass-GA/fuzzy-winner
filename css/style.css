@@ -3,27 +3,28 @@ html, body {
   padding: 0
 }
 
-body {
-
-}
-
 header {
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   text-align: center;
 }
 
+header .container .row {
+  padding: 0;
+}
+
 header div p, footer div p {
-  padding: 0 .25em .25em;
+  padding: 0 auto;
   margin: 0 auto;
 }
 
 .game_info {
-  /* border: 1px solid; */
+  border: 1px solid;
 }
 
 .game_controls {
-
+  padding: .25em;
+  /* font-size: 1em; */
 }
 
 .player_1 {
@@ -43,21 +44,27 @@ header div p, footer div p {
 }
 
 div .row {
-  /* border: 1px solid; */
-  padding: 1px;
-  /* margin: 0; */
+  border: 1px solid;
+  padding: .4em 0 0;
+  margin: 0;
   width: 100%;
 }
 
 canvas {
   background-color: lightgreen;
+
+}
+
+footer .page-footer {
+  /* width: 100%;
+  margin: 0 auto; */
 }
 
 footer .container {
   /* border: 1px solid; */
-  text-align: right;
+  /* text-align: right; */
   /* margin: 0; */
-  /* padding: 0 1em; */
+  /* padding: 0 0 1em; */
 }
 
 .about {
