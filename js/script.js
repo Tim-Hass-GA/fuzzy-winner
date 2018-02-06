@@ -59,6 +59,25 @@ window.addEventListener("resize", function(){
     // init();
 });
 
+// for each object
+// the width and height of the spritesheet
+// specify row and column
+// track right movement
+// track left movement
+// for the width num of sprites divided by the width of the spritesheet
+// for the hieght height of sprites divided by the num of the rows
+// first row will start at index 0
+// each row only contains 8 images frameCount
+// x and y coordinates for the sprites
+// srcX coordinates to get the frame
+// tracking movement left
+// assuming the the start direction is right
+// speed of movement
+
+// create the player object
+// set the source of the player objects
+
+
 
 var GameBoard = {
   name: "Pooper Scooper",
