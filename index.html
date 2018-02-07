@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
   <body>
-    <header class="blue-grey lighten-1 white-text">
+    <header id="header" class="blue-grey lighten-1 white-text">
       <div class="container black flow-text">
         <div class="row">
           <!-- <div class=""> -->
@@ -58,13 +58,14 @@
         <!-- </div> -->
       <!-- </div> -->
     </main>
-    <footer class="page-footer blue-grey lighten-1">
+    <!-- <footer class="page-footer blue-grey lighten-1"> -->
+    <footer>
 
       <!-- <div class="container"> -->
         <div class="row">
           <div class="col s12 l2">
             <!-- Modal Trigger -->
-            <a class="waves-effect waves-light btn-flat modal-trigger amber lighten-1" href="#modal1"><span class="about">About</span></a>
+            <!-- <a class="waves-effect waves-light btn-flat modal-trigger amber lighten-1" href="#modal1"><span class="about">About</span></a> -->
             <!-- Modal Structure -->
             <div id="modal1" class="modal bottom-sheet">
               <div class="modal-content black white-text">
@@ -84,17 +85,30 @@
               </div>
             </div>
           <!-- </div> -->
+          <!-- Modal Structure -->
+          <div id="modal2" class="modal bottom-sheet">
+            <div class="modal-content black white-text">
+              <h4>Contact me</h4>
+              <ul>
+                <li><a class="btn-flat red"><i class="material-icons">photo_library</i> Flicker</a></li>
+                <li><a class="btn-flat purple"><i class="material-icons">smoke_free</i> Git Hub</a></li>
+                <li><a class="btn-flat green"><i class="material-icons">beach_access</i> Linkedin</a></li>
+              </ul>
+            </div>
+            <div class="modal-footer amber lighten-1">
+              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Got it..!</a>
+            </div>
+          </div>
           <!-- <div class="col s10"> -->
             <div class="fixed-action-btn">
               <a class="btn-floating btn-large black">
-                <i class="large material-icons">contacts</i>
+                <i class="large material-icons">info</i>
               </a>
               <ul>
-                <li><a class="btn-floating red pulse"><i class="material-icons">photo_library</i></a></li>
-                <li><a class="btn-floating purple pulse"><i class="material-icons">smoke_free</i></a></li>
-                <li><a class="btn-floating green pulse"><i class="material-icons">beach_access</i></a></li>
-                <li><a class="btn-floating blue pulse"><i class="material-icons">info</i></a></li>
-                <li><a class="btn-floating black pulse"><i class="material-icons">directions_run</i></a></li>
+                <li><a class="btn-floating black pulse modal-trigger" href="#modal2"><i class="material-icons">contacts</i></a></li>
+                <li><a class="btn-floating black pulse modal-trigger" href="#modal1"><i class="material-icons">directions_run</i></a></li>
+                <!-- <li><a class="btn-floating black pulse modal-trigger" href="#modal1"><i class="material-icons">info</i></a></li> -->
+                <!-- <li><a class="btn-floating black pulse"><i class="material-icons"></i></a></li> -->
               </ul>
             </div>
           </div>

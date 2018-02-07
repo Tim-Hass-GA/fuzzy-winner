@@ -46,13 +46,14 @@ console.log("js is here");
 //
 
 // bring in the canvas object
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
+var header = document.getElementById("header");
+var headerHeight = header.hasOwnProperty("scrollHeight");
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.height = window.innerHeight - headerHeight;
 
+// event listen for window size
 window.addEventListener("resize", function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
