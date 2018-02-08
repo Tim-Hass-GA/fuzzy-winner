@@ -72,9 +72,9 @@ var ctx = canvas.getContext("2d");
 var header = document.getElementById("header");
 // var headerHeight = header.hasOwnProperty("scrollHeight");
 // canvas.width = window.innerWidth;
-// canvas.height = window.innerHeight;
+canvas.height = window.innerHeight;
 canvas.width = 500;
-canvas.height = 500;
+// canvas.height = 500;
 
 ///////////GAME EVENT FUNCTIONS//////////////
 
@@ -109,10 +109,7 @@ document.onkeyup = function(event){
 
 ///////////GAMEBOARD//////////////
 // set up the game variables for the game pieces
-//
-///////////GAMEBOARD//////////////
 // create the gameboard list
-// can hold player data
 // var gameBoardList = {};
 // start a game timer
 var gameStartTime = Date.now();
@@ -134,18 +131,42 @@ var Gameboard = {
 // create the doggy list object
 var doggyList = {};
 // create the doggy object
-var Dog = {
-  id: Math.random(),
-  name: "dogsName",
-  speed: Gameboard.speed,
-  ctx: [],
-  action: {
-    sit: function(){return this.speed},
-    run: function(){return this.speed},
-    bark: function(){return this.speed},
-    redirect: function(){return this.speed},
-    dropPoop: function(){return this.speed + this.poop}
-    }
+var Dog = function(id,x,y,speedX,speedY,width,height){
+  // dog object
+  var dog = {
+    id: Math.random(),
+    name: "Brian",
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+    speedX: speedX,
+    speedY: speedY,
+    timer: 0,
+    counter: 0,
+    hp: 10,
+    color: "red",
+    action: {
+      sit: function(){return this.speed},
+      run: function(){return this.speed},
+      bark: function(){return this.speed},
+      redirect: function(){return this.speed},
+      dropPoop: function(){return this.speed + this.poop}
+      }
+  }
+  doggyList[id] = dog;
+}
+// set up and place dog object
+var randomlyGenerateDog = function(){
+  var id = Math.random();
+  var x = Math.random() * canvas.width;
+  var y = Math.random() * canvas.height;
+  var width = 30;
+  var height = 30;
+  var speedX = 3 + Math.random() * 3;
+  var speedY = 3 + Math.random() * 3;
+
+  Dog(id,x,y,speedX,speedY,width,height)
 }
 
 // create the upgrades list
@@ -162,7 +183,8 @@ var Upgrade = function(id,x,y,speedX,speedY,width,height,category,color){
     width:width,
     height:height,
     category:category,
-    color:color
+    color:color,
+    timer:0
   };
   // add the item to the list
   upgradesList[id] = upgradeItem;
@@ -171,7 +193,7 @@ var Upgrade = function(id,x,y,speedX,speedY,width,height,category,color){
 var randomlyGenerateUpgrade = function(){
   var id = Math.random();
   var x = Math.random() * canvas.width;
-  var y = Math.random() * canvas.width;
+  var y = Math.random() * canvas.height;
   var speedX = 0;
   var speedY = 0;
   var width = 10;
@@ -229,73 +251,137 @@ var Player = {
 // }
 // generate player
 
-// create the  object
+// create the obstacle list
 var obstacleList = {};
-// create the player object
-var Obstacle = {
-  Tree: {
-    id: "tree",
+// create the obstacle object
+var Obstacle = function(){
+  // create tree
+  var tree = {
+    id: Math.random(),
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    speedX: 0,
+    speedY: 0,
+    width: 15,
+    height: 15,
+    color: "black",
     src: "imageLink",
-    ctx: [],
     level: Gameboard.level,
     action: {
-      blockMove: function(){return this.speed},
-      dropPoop: function(){return this.speed}
-    }
-  },
-  DogHouse: {
-    id: "dogHouse",
-    src: "imageLink",
-    ctx: [],
-    level: Gameboard.level,
-    action: {
-      blockMove: function(){return this.speed},
-      dropPoop: function(){return this.speed}
-    }
-  },
-  TrashCan: {
-    id: "trashCan",
-    src: "imageLink",
-    ctx: [],
-    level: Gameboard.level,
-    full: 10,
-    action: {
-      checkFull: function(){return this.full, this.level},
-      emptyCan: function(){return this.full}
-    }
-  },
-  Poopy: {
-    size: 1,
-    scoops: Gameboard.level,
-    src: "imageLink",
-    ctx: [],
-    actvity: {
-      destroyPoop: function(){return this.clicks - this.size},
-      resetClicks: function(){return this.clicks - this.size},
-      becomeObstacle: function(){return this.clicks - this.size}
+      blockMove: function(){return this.level},
+      dropPoop: function(){return this.level}
     }
   }
+  // create dog house
+  var dogHouse = {
+    id: Math.random(),
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    speedX: 0,
+    speedY: 0,
+    width: 15,
+    height: 15,
+    color: "gray",
+    src: "imageLink",
+    level: Gameboard.level,
+    action: {
+      blockMove: function(){return this.level},
+      dropPoop: function(){return this.level}
+    }
+  }
+  // create trash can
+  var trashCan = {
+    id: Math.random(),
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    speedX: 0,
+    speedY: 0,
+    width: 15,
+    height: 15,
+    color: "pink",
+    src: "imageLink",
+    level: Gameboard.level,
+    capacity: 10,
+    action: {
+      checkFull: function(){return this.capacity, this.level},
+      emptyCan: function(){return this.capacity}
+    }
+  }
+
+  // add to obstacleList
+  obstacleList[tree.id] = tree;
+  obstacleList[trashCan.id] = trashCan;
+  obstacleList[dogHouse.id] = dogHouse;
 };
 
+// create poopy list
+var poopyList = {};
+// create poop object
+var Poopy = function(id,x,y,width,height,scoops){
+
+  var poop = {
+    id: id,
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+    scoops: scoops,
+    src: "imageLink",
+    color: "yellow",
+    timer:0
+  }
+  poopyList[id] = poop;
+}
+
+// randomly generate poop
+var randomlyGeneratePoop = function(){
+  for (var key in doggyList){
+    var id = Math.random();
+    var x = doggyList[key].x;
+    var y = doggyList[key].y;
+    var width = 5;
+    var height = 5;
+    var scoops = Gameboard.level;
+  }
+  Poopy(id,x,y,width,height,scoops);
+}
 ///////////GAMEPLAY//////////////
 
 // get the distance between entities
-// var distanceBetweenEntity = function(){};
+var distanceBetweenEntity = function(entity1,entity2){
+  var vx = entity1.x - entity2.x;
+  var vy = entity1.y - entity2.y;
+  return Math.sqrt(vx * vx + vy * vy);
+};
 
 // test for collision
-// var testCollisionEntity = function(entity1, entity2){};
+var testCollisionEntity = function(entity1, entity2){
+  var rect1 = {
+    x: entity1.x - entity1.width / 2,
+    y: entity1.y - entity1.height / 2,
+    width: entity1.width,
+    height: entity1.height
+  }
+  var rect2 = {
+    x: entity2.x - entity2.width / 2,
+    y: entity2.y - entity2.height / 2,
+    width: entity2.width,
+    height: entity2.height
+  }
+  return testCollisionRect(rect1,rect2);
+};
 
 // test for collision rectangle
-// var testCollisionRect = function(rect1, rect2){};
+var testCollisionRect = function(rect1, rect2){
+  return rect1.x <= rect2.x + rect2.width
+    && rect2.x <= rect1.x + rect1.width
+    && rect1.y <= rect2.y + rect2.height
+    && rect2.y <= rect1.y + rect1.height
+};
 
-// var Upgrade = function(id,x,y,spdX,spdY,width,height,category,color){};
-// var randomlyGenerateUpgrade = function(){};
 
-
-
-///////////GAME ANIMATION//////////////
-
-// this will update the game - game loop
+///////////UPDATE ANIMATION//////////////
+// this will update the game for the game loop
 // draw the animations
 var drawEntity = function(entityToDraw){
   ctx.save();
@@ -314,7 +400,6 @@ var updateEntity = function(entityToUpdate){
 var updateEntityPosition = function(entityPos){
   entityPos.x += entityPos.speedX;
   entityPos.y += entityPos.speedY;
-
   // if greater than screen size change direction
   if (entityPos.x < 0 || entityPos.x > canvas.width){
     entityPos.speedX = -entityPos.speedX;
@@ -324,14 +409,13 @@ var updateEntityPosition = function(entityPos){
   }
 };
 
-// var updateDog = function(){};
-// var updateDogPosition = function(){};
-// updata player
+// update player
 // var updatePlayer = function(){
 //   playerX.x += playerX.speedX;
 //   playerX.y += playerX.speedY;
 //   ctx.fill
 // };
+
 // update playr position
 var updatePlayerPosition = function(){
   if (Player.pressingRight){
@@ -356,39 +440,101 @@ var updatePlayerPosition = function(){
   if (Player.y < Player.height / 2){
     Player.y = Player.height / 2;
   }
-  if (Player.y < Player.height / 2){
-    Player.x = canvas.height - Player.height / 2;
+  if (Player.y > canvas.height - Player.height / 2){
+    Player.y = canvas.height - Player.height / 2;
   }
 };
-//
+
+
+// EXAMPLE //
 // var updateObstacle = function(){};
 // var updatePlayerPosition = function(){};
+
+///////////GAME ANIMATION//////////////
 
 var updateGame = function(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   Gameboard.frameCount++;
   Gameboard.score++;
 
-  // spit out a new upgrade every 3 seconds
+  // create new upgrade every 4 seconds
   if (Gameboard.frameCount % 100 === 0) {
     randomlyGenerateUpgrade();
   }
 
+  // create poop every 3 seconds
+  if (Gameboard.frameCount % 75 === 0){
+    randomlyGeneratePoop();
+  }
+
+  for (var key in poopyList){
+    drawEntity(poopyList[key]);
+  }
+
+  // for the player
   updatePlayerPosition();
   drawEntity(Player);
 
+  // for the dog
+  for (var key in doggyList){
+    updateEntity(doggyList[key]);
+    drawEntity(doggyList[key]);
+    // check to see if the player collects upgrade
+    var isColliding = testCollisionEntity(doggyList[key],Player);
+        if (isColliding){
+          console.log("dog collides with player");
+          // console.log("score subtraction");
+          // console.log("player speed subtraction");
+        }
+    // check to see if the dog collides with object
+    for (var key2 in obstacleList){
+      var isColliding = testCollisionEntity(doggyList[key],obstacleList[key2]);
+          if (isColliding){
+            console.log("dog collides with obstacle");
+            // console.log("redirect dog");
+          }
+    }
+  }
 
+  // for obstacleList
+  for (var key in obstacleList){
+    updateEntity(obstacleList[key]);
+    drawEntity(obstacleList[key]);
+    // check to see if the player collects upgrade
+    var isColliding = testCollisionEntity(obstacleList[key],Player);
+        if (isColliding){
+          console.log("player collides with obstacle");
+          // console.log("score subtraction");
+          // console.log("player drops any held objects");
+        }
+  }
+
+  // for upgradesList
   for (var key in upgradesList){
     updateEntity(upgradesList[key]);
+    // set a timer on the upgrade
+    upgradesList[key].timer++;
+    // remove the upgrade after so many frames
+    if (upgradesList[key].timer > 100){
+      delete upgradesList[key];
+      continue;
+    }
+    // check to see if the player collects upgrade
+    var isColliding = testCollisionEntity(upgradesList[key],Player);
+        if (isColliding){
+          console.log("you collected the upgrade");
+          if (upgradesList[key].category === "score"){
+            console.log("score bonus");
+          }
+          if (upgradesList[key].category === "speed"){
+            console.log("upgrade speed")
+          }
+          delete upgradesList[key];
+          break;
+        }
+    }
 
-    // if (upgradesList[key].category === "score"){
-    //   console.log("upgrade bonus");
-    // }
-    // if (upgradesList[key].category === "speed"){
-    //   console.log("upgrade speed")
-    // }
-    // delete upgradesList[key];
-  }
+
 
 };
 
@@ -407,6 +553,8 @@ var startNewGame = function(){
   upgradesList = {};
 
   randomlyGenerateUpgrade();
+  randomlyGenerateDog();
+  Obstacle();
 };
 // start the game
 startNewGame();
