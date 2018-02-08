@@ -1,4 +1,4 @@
-console.log("script.js is here");
+console.log("script_2.js is here");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
@@ -44,22 +44,6 @@ console.log("script.js is here");
 // extensions
 // playBall
 //
-
-// bring in the canvas object
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-var header = document.getElementById("header");
-var headerHeight = header.hasOwnProperty("scrollHeight");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - headerHeight;
-
-// event listen for window size
-window.addEventListener("resize", function(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // init();
-});
-
 // for each object
 // the width and height of the spritesheet
 // specify row and column
@@ -79,6 +63,25 @@ window.addEventListener("resize", function(){
 // set the source of the player objects
 
 
+///////////CODE START/////////////
+// bring in the canvas object
+/////////////////////////////////
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var header = document.getElementById("header");
+// var headerHeight = header.hasOwnProperty("scrollHeight");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+///////////GAMEBOARD//////////////
+// set up the game variables for the
+// game pieces
+//
+///////////GAMEBOARD//////////////
+// create the gameboard list
+// var gameBoardList = {};
+// create the player object
+// var gameStartTime = new Date.now();
 
 var GameBoard = {
   name: "Pooper Scooper",
@@ -117,6 +120,10 @@ var GameBoard = {
     onPoopScoop: function(){return this.speed}
   }
 }
+
+// create the doggy list object
+var doggyList = {};
+// create the doggy object
 var Dog = {
   name: "dogsName",
   speed: GameBoard.level.speed,
@@ -129,6 +136,20 @@ var Dog = {
     dropPoop: function(){return this.speed + this.poop}
     }
 }
+
+// create the upgrades list
+// this is a extra feature
+var updateGradesList = {};
+// create the updates object
+var Upgrades = {};
+
+// create additional enemies for the game
+// this is extra
+// crows
+
+// create the player list
+var playerList = {};
+// create the player object
 var Player = {
   name: "player",
   id: "player#",
@@ -145,8 +166,12 @@ var Player = {
     stepInPoop: function(){return this.speed}
   }
 }
+
+// create the  object
+var obstacleList = {};
+// create the player object
 var Obstacle = {
-  tree: {
+  Tree: {
     id: "tree",
     src: "imageLink",
     ctx: [],
@@ -156,7 +181,7 @@ var Obstacle = {
       dropPoop: function(){return this.speed}
     }
   },
-  dogHouse: {
+  DogHouse: {
     id: "dogHouse",
     src: "imageLink",
     ctx: [],
@@ -166,7 +191,7 @@ var Obstacle = {
       dropPoop: function(){return this.speed}
     }
   },
-  trashCan: {
+  TrashCan: {
     id: "trashCan",
     src: "imageLink",
     ctx: [],
@@ -177,7 +202,7 @@ var Obstacle = {
       emptyCan: function(){return this.full}
     }
   },
-  poop: {
+  Poopy: {
     size: 1,
     scoops: GameBoard.level.id,
     src: "imageLink",
@@ -188,16 +213,85 @@ var Obstacle = {
       becomeObstacle: function(){return this.clicks - this.size}
     }
   }
-}
+};
+
+///////////GAMEPLAY//////////////
+
+// get the distance between entities
+var distanceBetweenEntity = function(){};
+// test for collision
+var testCollisionEntity = function(entity1, entity2){};
+// test for collision rectangle
+var testCollisionRect = function(rect1, rect2){};
+
+var Upgrade = function(id,x,y,spdX,spdY,width,height,category,color){};
+var randomlyGenerateUpgrade = function(){};
+
+
+
+///////////GAME ANIMATION//////////////
+
+// this will update the game - game loop
+// update the game pieces
+var drawEntity = function(entityToDraw){};
+var updateEntity = function(entityToUpdate){};
+var updateEntityPosition = function(entityPosUpdate){};
+
+var updateDog = function(){};
+var updateDogPosition = function(){};
+
+var updatePlayer = function(){};
+var updatePlayerPosition = function(){};
+
+var updateObstacle = function(){};
+// var updatePlayerPosition = function(){};
+
+var updateGame = function(){};
+
+
+
+
+///////////GAME EVENT FUNCTIONS//////////////
+
+// on mouse over
+document.onmouseover = function(mouse){};
+// on game click events
+document.onclick = function(mouse){};
+// on key down event
+document.onkeydown = function(event){};
+// on key up event
+document.onkeyup = function(event){};
+
+///////////NEW GAME//////////////
+
+// clear the game
+var startNewGame = function(){};
+// start the game
+startNewGame();
+
+// set temp animation
+setInterval(updateGame, 40);
+
+///////////LETS GO//////////////
 
 // document ready statement
 $(document).ready(function(){
+  // event listen for window click on window
+  // canvas.addEventListener("click", function(event) {
+  //     // drawRectangle(ctx, event.offsetX, event.offsetY);
+  //     console.log("click called document ready");
+  //   });
 
-  canvas.addEventListener("click", function(event) {
-      drawRectangle(ctx, event.offsetX, event.offsetY);
+    // event listen for window size
+    window.addEventListener("resize", function(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // init();
+        // update();
     });
 
-  // the "href" attribute of the modal trigger must specify the modal ID
+  // the "href" attribute of the modal trigger
+  // must specify the modal ID
   // that wants to be triggered
     $('.modal').modal();
 });
