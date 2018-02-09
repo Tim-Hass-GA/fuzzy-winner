@@ -75,6 +75,55 @@ canvas.height = window.innerHeight;
 canvas.width = 500;
 // canvas.height = 500;
 
+///////////GAME EVENT FUNCTIONS//////////////
+// on mouse over
+document.onmouseover = function(mouse){
+  var mouseX = mouse.clientX - 8;
+  var mouseY = mouse.clientY - 8;
+
+  ////////////  this isn't working for me  ///////////////
+  // var mouseX = mouse.clientX - document.getElementById('ctx').getBoundingClientRect().left;
+  // var mouseY = mouse.clientY - document.getElementById('ctx').getBoundingClientRect().top;
+
+  // adjust to relative to the position of the player
+  mouseX -= player.x;
+  mouseY -= player.y;
+  player.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
+};
+// on game click events
+document.onclick = function(event){
+  dog.preformAttack();
+};
+// on game click events
+document.oncontextmenu = function(event){
+  dog.preformSpecialAttack();
+  event.preventDefault();
+};
+// on key down event
+document.onkeydown = function(event){
+  if (event.keyCode === 68 || event.keyCode === 39){
+    Player.pressingRight = true;
+  } else if (event.keyCode === 83 || event.keyCode === 40){
+    Player.pressingDown = true;
+  } else if (event.keyCode === 65 || event.keyCode === 37){
+    Player.pressingLeft = true;
+  } else if (event.keyCode === 87 || event.keyCode === 38){
+    Player.pressingUp = true;
+  }
+};
+// on key up event
+document.onkeyup = function(event){
+  if (event.keyCode === 68 || event.keyCode === 39){
+    Player.pressingRight = false;
+  } else if (event.keyCode === 83 || event.keyCode === 40){
+    Player.pressingDown = false;
+  } else if (event.keyCode === 65 || event.keyCode === 37){
+    Player.pressingLeft = false;
+  } else if (event.keyCode === 87 || event.keyCode === 38){
+    Player.pressingUp = false;
+  }
+};
+
 ///////////GAMEBOARD//////////////
 // set up the game board variables
 // start a game timer
@@ -102,13 +151,11 @@ Img.dog = new Image();
 Img.dog.src = "./images/Dog.png";
 Img.boy = new Image();
 Img.boy.src = "./images/Boyrun.png";
-Img.poop = new Image();
-Img.poop.src = "./images/emeny.png";
 
 // Img.dogHouse = new Image();
 // Img.dogHouse.src = "./images/Dog.png";
-Img.tree = new Image();
-Img.tree.src = "./images/Apple_Tree.png";
+Img.tree1 = new Image();
+Img.tree1.src = "./images/Apple_Tree/Dog.png";
 Img.tree2 = new Image();
 Img.tree2.src = "./images/Cherry_Tree.png";
 Img.rock = new Image();
@@ -192,7 +239,7 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
 }
 
 ///////////Actor//////////////
-var Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
+var Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img){
   // Make myself
   var self = Entity(type,id,x,y,speedX,speedY,width,height,img);
   // Set common attributes for the actors
@@ -205,7 +252,7 @@ var Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
   self.update = function(){
     super_update();
     self.updatePostion();
-    self.draw();
+    self.draw():
     self.stkCounter += self.stkSp;
   }
   self.performAttack = function(){
@@ -351,7 +398,7 @@ var Upgrade = function(id,x,y,speedX,speedY,width,height,category,img){
   }
   self.category = category
   // add the item to the list
-  upgradesList[id] = self;
+  upgradesList[id] = upgradeItem;
 };
 
 // setup and place upgrades on the board
@@ -375,7 +422,7 @@ var randomlyGenerateUpgrade = function(){
   //   var category = "speed";
   //   var img = Img.upgrade2;
   // }
-  else {
+  else (random < 0.5) {
     var category = "health";
     var img = Img.upgrade3;
   }
@@ -458,7 +505,7 @@ var Obstacle = function(){
 var poopyList = {};
 // create poop object
 var Poopy = function(id,x,y,speedX,speedY,width,height,scoops){
-  var self = Entity("poop",id,x,y,speedX,speedY,width,height,Img.poop);
+  var self = Entity("poop",id,x,y,speedX,speedY,widht,height,Img.poop);
   var super_update = self.update;
   self.update = function(){
     super_update();
@@ -505,8 +552,8 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,scoops){
 var generatePoop = function(actor,overrideAngle){
 
   var id = Math.random();
-  var x = Dog.x;
-  var y = Dog.y;
+  var x = actor.x;
+  var y = actor.y;
   var width = 5;
   var height = 5;
   var scoops = Gameboard.level;
@@ -514,7 +561,7 @@ var generatePoop = function(actor,overrideAngle){
   if (overrideAngle !== undefined){
     angle = overrideAngle;
   } else {
-    angle = Dog.aimAngle;
+    angle = actor.aimAngle;
   }
   var speedX = 0;
   var speedY = 0;
@@ -548,7 +595,7 @@ var updateGame = function(){
     generatePoop();
   }
   // for the player
-  Gameboard.player.update();
+  player.update();
   ctx.fillText(player.hp + " HP", 0, 30);
   ctx.fillText("Score: " + player.score, 200, 30);
 
@@ -574,7 +621,7 @@ var updateGame = function(){
 
 // clear the game
 var startNewGame = function(){
-  Gameboard.player.hp = 10;
+  player.hp = 10;
   Gameboard.gameStartTime = Date.now();
   Gameboard.frameCount = 0;
   Gameboard.score = 0;
@@ -588,65 +635,14 @@ var startNewGame = function(){
   randomlyGenerateDog();
   Obstacle();
 };
-
-
 // start the game
-Gameboard.player = Player();
-// Gameboard.player.push(player);
 startNewGame();
 
 // set temp animation
 setInterval(updateGame, 40);
-///////////GAME EVENT FUNCTIONS//////////////
-// on mouse over
-document.onmouseover = function(mouse){
-  var mouseX = mouse.clientX - 8;
-  var mouseY = mouse.clientY - 8;
-
-  ////////////  this isn't working for me  ///////////////
-  // var mouseX = mouse.clientX - document.getElementById('ctx').getBoundingClientRect().left;
-  // var mouseY = mouse.clientY - document.getElementById('ctx').getBoundingClientRect().top;
-
-  // adjust to relative to the position of the player
-  mouseX -= Gameboard.player.x;
-  mouseY -= Gameboard.player.y;
-  Gameboard.player.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
-};
-// on game click events
-document.onclick = function(event){
-  dog.preformAttack();
-};
-// on game click events
-document.oncontextmenu = function(event){
-  dog.preformSpecialAttack();
-  event.preventDefault();
-};
-// on key down event
-document.onkeydown = function(event){
-  if (event.keyCode === 68 || event.keyCode === 39){
-    Gameboard.player.pressingRight = true;
-  } else if (event.keyCode === 83 || event.keyCode === 40){
-    Gameboard.player.pressingDown = true;
-  } else if (event.keyCode === 65 || event.keyCode === 37){
-    Gameboard.player.pressingLeft = true;
-  } else if (event.keyCode === 87 || event.keyCode === 38){
-    Gameboard.player.pressingUp = true;
-  }
-};
-// on key up event
-document.onkeyup = function(event){
-  if (event.keyCode === 68 || event.keyCode === 39){
-    Gameboard.player.pressingRight = false;
-  } else if (event.keyCode === 83 || event.keyCode === 40){
-    Gameboard.player.pressingDown = false;
-  } else if (event.keyCode === 65 || event.keyCode === 37){
-    Gameboard.player.pressingLeft = false;
-  } else if (event.keyCode === 87 || event.keyCode === 38){
-    Gameboard.player.pressingUp = false;
-  }
-};
 
 ///////////LETS GO//////////////
+
 // document ready statement
 $(document).ready(function(){
   // event listen for window click on window
