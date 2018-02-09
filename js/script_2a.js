@@ -1,4 +1,4 @@
-console.log("script_2.js is here");
+console.log("script_2a.js is here");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
@@ -252,7 +252,7 @@ var Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img){
   self.update = function(){
     super_update();
     self.updatePostion();
-    self.draw():
+    self.draw();
     self.stkCounter += self.stkSp;
   }
   self.performAttack = function(){
