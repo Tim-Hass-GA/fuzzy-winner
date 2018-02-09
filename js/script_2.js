@@ -66,7 +66,6 @@ console.log("script_2.js is here");
 ///////////CODE START/////////////
 // bring in the canvas object
 /////////////////////////////////
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var header = document.getElementById("header");
@@ -77,7 +76,6 @@ canvas.width = 500;
 // canvas.height = 500;
 
 ///////////GAME EVENT FUNCTIONS//////////////
-
 // on mouse over
 document.onmouseover = function(mouse){};
 // on game click events
@@ -108,40 +106,164 @@ document.onkeyup = function(event){
 };
 
 ///////////GAMEBOARD//////////////
-// set up the game variables for the game pieces
-// create the gameboard list
-// var gameBoardList = {};
+// set up the game board variables
 // start a game timer
-var gameStartTime = Date.now();
 // create the gameboard object
 var Gameboard = {
   name: "Pooper Scooper",
   src: "imageLink",
+  gameStartTime: Date.now(),
   gameScoreWin: 10,
   gameScore: 0,
   playerArray: [],
   playerScore: [],
+  playerHighScore: [],
   gameStopTime: null,
   gameTimer: 0,
   gameCounter: 0,
+  frameCount: 0,
   level: 1,
   speed: 1
+}
+
+// load game board images
+var Img = {};
+Img.dog = new Image();
+Img.dog.src = "./images/Dog.png";
+Img.boy = new Image();
+Img.boy.src = "./images/Boyrun.png";
+
+// Img.dogHouse = new Image();
+// Img.dogHouse.src = "./images/Dog.png";
+Img.tree1 = new Image();
+Img.tree1.src = "./images/Apple_Tree/Dog.png";
+Img.tree2 = new Image();
+Img.tree2.src = "./images/Cherry_Tree.png";
+Img.rock = new Image();
+Img.rock.src = "./images/Rock.png";
+// Img.trashCan = new Image();
+// Img.trashCan.src = "./images/Dog.png";
+
+Img.pumpkin = new Image();
+Img.pumpkin.src = "./images/Pumpkin.png";
+// Img.star = new Image();
+// Img.star.src = "./images/Dog.png";
+// Img.heart = new Image();
+// Img.heart.src = "./images/Dog.png";
+
+Img.house = new Image();
+Img.house.src = "./images.Dog.png";
+Img.park = new Image();
+Img.park.src = "./images/Park.png";
+
+///////////GAMEBOARD PIECES//////////////
+var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
+  // And the computer said...create this
+  var self = {
+    type:type,
+    x: x,
+    y: y,
+    speedX: speedX,
+    speedY: speedY,
+    width: width,
+    height: height,
+    img:img
+  };
+  self.update = function(){
+    self.updatePosition();
+    self.draw();
+  }
+  self.draw = function(){
+    ctx.save();
+    var x = self.x - self.width / 2;
+    var y = self.y - self.height / 2;
+    ctx.drawImage(self.img,x,y);
+    ctx.restore();
+  }
+  self.getDistance = function(entity2){
+    var vx = self.x - entity2.x;
+    var vy = self.y - entity2.y;
+    return Math.sqrt(vx * vx + vy * vy);
+  }
+  self.testCollision = function(entity2){
+    var rect1 = {
+      x: self.x - self.width / 2,
+      y: self.y - self.height / 2,
+      width: self.width,
+      height: self.height
+    }
+    var rect2 = {
+      x: entity2.x - entity2.width / 2,
+      y: entity2.y - entity2.heigth / 2,
+      width: entity2.width,
+      height: entity2.height
+    }
+    return testCollisionRect(rect1,rect2);
+  }
+  self.updatePosition = function(){
+    self.x += self.speedX;
+    self.y += self.speedY;
+    // if greater than screen size change direction
+    if (self.x < 0 || self.x > canvas.width){
+      self.speedX = - self.speedX;
+    }
+    if (self.y < 0 || self.y > canvas.height){
+      self.speedY = - self.speedY;
+    }
+  }
+// return the Entity
+// representing an object
+// in the game
+  return self;
+}
+
+var Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img){
+  // Make myself
+  var self = Entity(type,id,x,y,speedX,speedY,width,height,img);
+  // Set common attributes for the actors
+  self.hp = hp;
+  self.stkSp = stkSp;
+  self.stkCounter = 0;
+  self.aimAngle = 0;
+
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    self.updatePostion();
+    self.draw():
+    self.stkCounter += self.stkSp;
+  }
+  self.performAttack = function(){
+    if (self.stkCounter > 25){
+      generatePoop(self);
+      self.stkCouter = 0;
+    }
+  }
+  self.performSpecialAttack = function(){
+    if (self.stkCouter > 50){
+      generatePoop(self,self.aimAngle - 5);
+      generatePoop(self,self.aimAngle);
+      generatePoop(self,self.aimAngle + 5);
+      self.counter = 0;
+    }
+  }
+// return the Actor
+// which further describe
+// the entities in the game
+  return self;
 }
 
 // create the doggy list object
 var doggyList = {};
 // create the doggy object
 var Dog = function(id,x,y,speedX,speedY,width,height){
+  var self = Actor("dog","myId",)
+  // Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img)
+
   // dog object
   var dog = {
     id: Math.random(),
     name: "Brian",
-    x: x,
-    y: y,
-    width: width,
-    height: height,
-    speedX: speedX,
-    speedY: speedY,
     timer: 0,
     counter: 0,
     hp: 10,
@@ -173,6 +295,8 @@ var randomlyGenerateDog = function(){
 // this is a extra feature
 var upgradesList = {};
 // create upgrade object
+// Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img)
+
 var Upgrade = function(id,x,y,speedX,speedY,width,height,category,color){
   var upgradeItem = {
     id:id,
@@ -216,40 +340,56 @@ var randomlyGenerateUpgrade = function(){
 // crows
 
 // create the player list
-// var playerList = {};
+var playerList = {};
 // player object
-var Player = {
-  id:Math.random(),
-  name:"name",
-  x:50,
-  y:40,
-  speedX:30,
-  speedY:5,
-  width:20,
-  height:20,
-  hp:10,
-  strikeSpeed:1,
-  counter:0,
-  pressingUp:false,
-  pressingDown:false,
-  pressingLeft:false,
-  pressingRight:false,
-  color:"green"
+var Player = function(){
+  var self = Actor("player","myId",50,40,30,5,20,20,1,Img.Boyrun)
+  // Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img)
+  self.updatePosition = function(){
+    if (self.pressingRight){
+      self.x += 10;
+    }
+    if (self.pressingLeft){
+      self.x -= 10;
+    }
+    if (self.pressingUp){
+      self.y -= 10;
+    }
+    if (self.pressingDown){
+      self.y += 10;
+    }
+    // reposition the mouse
+    // in relation to player
+    if (self.x < self.width / 2){
+      self.x = self.width / 2;
+    }
+    if (self.x > canvas.width - self.width / 2){
+      self.x = canvas.width - self.width / 2;
+    }
+    if (self.y < self.height / 2){
+      self.y = self.height / 2;
+    }
+    if (self.y > canvas.height - self.height / 2){
+      self.y = canvas.height - self.height / 2;
+    }
+  }
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    if (self.hp <= 0){
+      var timeSurvied = Date.now() - Gameboard.gameStartTime;
+      Gameboard.gameStopTime = timeSurvied;
+      console.log("you lost @ " +timeSurvied+ " ms.");
+      startNewGame();
+    }
+  }
+  self.pressingDown = false;
+  self.pressingUp = false;
+  self.pressingLeft = false;
+  self.pressingRight = false;
+// return the Player object
+  return self;
 }
-
-//   level: Gameboard.level,
-//   ctx: [],
-//   score: 0,
-//   highScore: 0,
-//   action: {
-//     walk: function(){return this.speed},
-//     run: function(){return this.speed},
-//     dumpPoop: function(){return this.speed},
-//     pickUpPoop: function(){return this.speed},
-//     stepInPoop: function(){return this.speed}
-//   }
-// }
-// generate player
 
 // create the obstacle list
 var obstacleList = {};
@@ -318,6 +458,7 @@ var Obstacle = function(){
 var poopyList = {};
 // create poop object
 var Poopy = function(id,x,y,width,height,scoops){
+  // Actor = function(type,id,x,y,speedX,speedY,width,height,stkSp,img)
 
   var poop = {
     id: id,
@@ -379,7 +520,7 @@ var testCollisionRect = function(rect1, rect2){
     && rect2.y <= rect1.y + rect1.height
 };
 
-
+var safeZone = function(){};
 ///////////UPDATE ANIMATION//////////////
 // this will update the game for the game loop
 // draw the animations
@@ -416,7 +557,7 @@ var updateEntityPosition = function(entityPos){
 //   ctx.fill
 // };
 
-// update playr position
+// update player position
 var updatePlayerPosition = function(){
   if (Player.pressingRight){
     Player.x += 10;
@@ -467,18 +608,34 @@ var updateGame = function(){
     randomlyGeneratePoop();
   }
 
-  for (var key in poopyList){
-    drawEntity(poopyList[key]);
-  }
-
   // for the player
   updatePlayerPosition();
   drawEntity(Player);
 
+  // for the poops
+  for (var key in poopyList){
+    drawEntity(poopyList[key]);
+    // check to see if the player collects upgrade
+    var isColliding = testCollisionEntity(poopyList[key],Player);
+        if (isColliding){
+          console.log("player stepped in it");
+          // console.log("score subtraction");
+          // console.log("player speed subtraction");
+          // increase dog score
+        }
+    // check to see if the dog collides with object
+    for (var key2 in doggyList){
+      var isColliding = testCollisionEntity(poopyList[key],doggyList[key2]);
+          if (isColliding){
+            console.log("dog collides with poop");
+            // console.log("redirect dog");
+          }
+    }
+  }
+
   // for the dog
   for (var key in doggyList){
     updateEntity(doggyList[key]);
-    drawEntity(doggyList[key]);
     // check to see if the player collects upgrade
     var isColliding = testCollisionEntity(doggyList[key],Player);
         if (isColliding){
@@ -499,7 +656,6 @@ var updateGame = function(){
   // for obstacleList
   for (var key in obstacleList){
     updateEntity(obstacleList[key]);
-    drawEntity(obstacleList[key]);
     // check to see if the player collects upgrade
     var isColliding = testCollisionEntity(obstacleList[key],Player);
         if (isColliding){
@@ -551,6 +707,11 @@ var startNewGame = function(){
   Gameboard.frameCount = 0;
   Gameboard.score = 0;
   upgradesList = {};
+  poopyList = {};
+  playerList = {};
+  obstacleList = {};
+  doggyList = {};
+
 
   randomlyGenerateUpgrade();
   randomlyGenerateDog();
