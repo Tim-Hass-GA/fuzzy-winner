@@ -100,6 +100,8 @@ var Gameboard = {
 var Img = {};
 Img.dog = new Image();
 Img.dog.src = "./images/Dog1.png";
+// Img.dog.width;
+// Img.dog.heigth;
 Img.boy = new Image();
 Img.boy.src = "./images/Boyrun.png";
 Img.poop = new Image();
@@ -109,8 +111,8 @@ Img.poop.src = "./images/emeny.png";
 // Img.dogHouse.src = "./images/Dog.png";
 Img.tree = new Image();
 Img.tree.src = "./images/Apple_Tree1.png";
-Img.tree2 = new Image();
-Img.tree2.src = "./images/Cherry_Tree.png";
+// Img.tree2 = new Image();
+// Img.tree2.src = "./images/Cherry_Tree.png";
 Img.rock = new Image();
 Img.rock.src = "./images/Rock.png";
 // Img.trashCan = new Image();
@@ -151,11 +153,12 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
     ctx.save();
     var x = self.x - self.width / 2;
     var y = self.y - self.height / 2;
-    ctx.drawImage(self.img,x,y);
+    // ctx.drawImage(self.img,x,y);
 
     // ctx.drawImage(image,
     //   cropStartX, cropStartY, cropWidth, cropHeight,
     //   drawX,drawY,drawWidth,drawHeight);
+    ctx.drawImage(self.img,0, 0,self.img.width,self.img.height,x,y,self.width,self.height);
 
     ctx.restore();
   }
@@ -325,16 +328,16 @@ var Player = function(){
       startNewGame();
     }
   }
-  var super_collision = self.testCollision;
-  self.testCollision = function(entity2){
-    super_collision();
-    console.log(entity2.type);
-    if (entity2.type === "dog"){
-      console.log("Player hit dog");
-      player.hp -= 5;
-      player.stkSp -= 1;
-    }
-  }
+  // var super_collision = self.testCollision;
+  // self.testCollision = function(entity2){
+  //   super_collision();
+  //   console.log(entity2.type);
+  //   if (entity2.type === "dog"){
+  //     console.log("Player hit dog");
+  //     player.hp -= 5;
+  //     player.stkSp -= 1;
+  //   }
+  // }
   self.pressingDown = false;
   self.pressingUp = false;
   self.pressingLeft = false;
@@ -383,26 +386,26 @@ var Upgrade = function(id,x,y,speedX,speedY,width,height,category,img){
   //   }
   // }
   // FIX THIS
-  var super_collision = self.testCollision;
-  self.testCollision = function(entity2){
-    super_collision();
-    console.log(entity2.type);
-      if (entity2.type === "player"){
-        self.toRemove = true;
-        if (entity2.category === "score"){
-          console.log("YEAH score bonus");
-          player.score += 1000;
-        }
-        if (entity2.category === "health"){
-          console.log("YEAH health bonus");
-          player.hp += 10;
-        }
-        if (entity2.category === "speed"){
-          console.log("YEAH speed bonus");
-          player.stkSp += 3;
-        }
-      }
-  }
+  // var super_collision = self.testCollision;
+  // self.testCollision = function(entity2){
+  //   super_collision();
+  //   console.log(entity2.type);
+  //     if (entity2.type === "player"){
+  //       self.toRemove = true;
+  //       if (entity2.category === "score"){
+  //         console.log("YEAH score bonus");
+  //         player.score += 1000;
+  //       }
+  //       if (entity2.category === "health"){
+  //         console.log("YEAH health bonus");
+  //         player.hp += 10;
+  //       }
+  //       if (entity2.category === "speed"){
+  //         console.log("YEAH speed bonus");
+  //         player.stkSp += 3;
+  //       }
+  //     }
+  // }
   self.category = category;
   // self.timer++;
   // add the item to the list
@@ -513,10 +516,10 @@ var poopyList = {};
 var Poopy = function(id,x,y,speedX,speedY,width,height,scoops){
   var self = Actor("poop",id,x,y,speedX,speedY,width,height,2,0,Img.poop);
   // Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img)
-  var super_update = self.update;
-  self.update = function(){
-    super_update();
-    var toRemove = false;
+  // var super_update = self.update;
+  // self.update = function(){
+  //   super_update();
+  //   var toRemove = false;
     // if (self.timer > 75){
     //   toRemove = true;
     // }
@@ -530,26 +533,26 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,scoops){
     // }
     // test for collision with player
     // doc points for steppig in it
-    var isColliding = self.testCollision(player);
-        if (isColliding){
-          console.log("player stepped in me");
-          toRemove = true;
-          // console.log("score subtraction");
-          // console.log("player speed subtraction");
-          // increase dog speed
-        }
-    // check to see if the dog collides with object
-    for (var key2 in doggyList){
-      var isColliding = self.testCollision(doggyList[key2]);
-          if (self.isColliding){
-            console.log("dog collides with poop");
-            // console.log("redirect dog");
-          }
-    }
-    if (toRemove){
-      delete poopyList[self.id];
-    }
-  }
+    // var isColliding = self.testCollision(player);
+    //     if (isColliding){
+    //       console.log("player stepped in me");
+    //       toRemove = true;
+    //       // console.log("score subtraction");
+    //       // console.log("player speed subtraction");
+    //       // increase dog speed
+    //     }
+    // // check to see if the dog collides with object
+    // for (var key2 in doggyList){
+    //   var isColliding = self.testCollision(doggyList[key2]);
+    //       if (self.isColliding){
+    //         console.log("dog collides with poop");
+    //         // console.log("redirect dog");
+    //       }
+    // }
+    // if (toRemove){
+    //   delete poopyList[self.id];
+    // }
+  // }
   self.timer = 0;
   poopyList[id] = self;
 }
