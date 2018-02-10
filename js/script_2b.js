@@ -1,4 +1,4 @@
-console.log("script_2.js is here");
+console.log("script_2b.js is here player control");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017

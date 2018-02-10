@@ -1,4 +1,4 @@
-console.log("script_2.js is here");
+console.log("script_2.js is here removed static player");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
@@ -8,60 +8,6 @@ console.log("script_2.js is here");
 // the objective of the game is to keep the area clean, so
 // Brian can have a nice place to have fun
 
-// the game begins with one poop on the board
-// there are 3 levels to the current version of the game
-// the game is over if more than x# of poops are left on the GameBoard (varies per level)
-// the game is over when a player reaches 10 points 3 times or the game reaches 10 points
-// the game is timed every 2 minutes the game gets a point
-// the game moves to the next level when PlayerX reaches 10 points (timers reset for each level)
-
-// player must move around all obstacles in the game
-//    if player hits the same obstable twice
-//        while poop in hand the poop will drop
-// player must pick up poop again
-// player must move to the poop safeZone
-// player must click on poop object to collect it (clicks vary per level)
-//    if player collides with a single poop object
-//        the stepped in poop becomes an obstable (but can be stepped in again)
-//    if stepped in =2 the poop is destroyed and game gets 5 points
-// player must move to trashCan safeZone
-// player must click to dispose (one click)
-// be careful you can full into the trashcan (gameover)
-
-// Brain will run around and play in the area
-// Brain is set on a 30 second timer
-// Brian moves at a set set interal
-// Brain randomly drops poop
-// Brain is redirected when he collides with and obstacle
-
-// to do
-// resize canvasSize
-// 2 clicks outside of obstacle when not in safeZone
-// 2 clicks on poop collects the poop
-// 1 click on trashCan collects the poop
-// safeZone for click
-// crash on poop collision
-// extensions
-// playBall
-//
-// for each object
-// the width and height of the spritesheet
-// specify row and column
-// track right movement
-// track left movement
-// for the width num of sprites divided by the width of the spritesheet
-// for the hieght height of sprites divided by the num of the rows
-// first row will start at index 0
-// each row only contains 8 images frameCount
-// x and y coordinates for the sprites
-// srcX coordinates to get the frame
-// tracking movement left
-// assuming the the start direction is right
-// speed of movement
-
-// create the player object
-// set the source of the player objects
-
 
 ///////////CODE START/////////////
 // bring in the canvas object
@@ -70,10 +16,13 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var header = document.getElementById("header");
 // var headerHeight = header.hasOwnProperty("scrollHeight");
-// canvas.width = window.innerWidth;
+canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-canvas.width = 500;
+
+// canvas.width = 500;
 // canvas.height = 500;
+// var WIDTH = 500;
+// var HEIGHT = 500;
 
 ///////////GAMEBOARD//////////////
 // set up the game board variables
@@ -110,27 +59,62 @@ Img.poop.src = "./images/emeny.png";
 // Img.dogHouse = new Image();
 // Img.dogHouse.src = "./images/Dog.png";
 Img.tree = new Image();
-Img.tree.src = "./images/Apple_Tree1.png";
-// Img.tree2 = new Image();
-// Img.tree2.src = "./images/Cherry_Tree.png";
+Img.tree.src = "./images/Tree1.png";
+Img.tree2 = new Image();
+Img.tree2.src = "./images/Tree2.png";
 Img.rock = new Image();
-Img.rock.src = "./images/Rock.png";
+Img.rock.src = "./images/Rock1.png";
 // Img.trashCan = new Image();
 // Img.trashCan.src = "./images/Dog.png";
 
 Img.upgrade1 = new Image();
-Img.upgrade1.src = "./images/Pumpkin1.png";
+Img.upgrade1.src = "./images/Pumpkin2.png";
 Img.upgrade2 = new Image();
-Img.upgrade2.src = "./images/Apple.png";
+Img.upgrade2.src = "./images/Grass1.png";
 Img.upgrade3 = new Image();
-Img.upgrade3.src = "./images/Grass1.png";
+Img.upgrade3.src = "./images/Apple.png";
 
-// Img.house = new Image();
-// Img.house.src = "./images.Dog.png";
-// Img.park = new Image();
-// Img.park.src = "./images/Park.png";
+// Img.map2 = new Image();
+// Img.map2.src = "./images/Park.png";
 
 ///////////GAMEBOARD PIECES//////////////
+
+// var drawMap = function(){
+  // where to draw the map
+  // var x = ???
+  // var y = ???
+  // if (player.x === WIDTH/2)
+  //   x = 0
+  // x = player.x === WIDTH/2
+  // .playerx increase => mapx decreases
+  // x = WIDTH/2 - player.x
+
+  // ctx.drawImage(Img.map1,0,0,Img.map1.width,Img.map1.height,0,0,Img.map1.width * 2,Img.map1.height * 2);
+
+// }
+
+// var CreateMaps = function(id,imgSrc,width,height){
+//   var self = {
+//     id:id,
+//     image: new Image(),
+//     width:width,
+//     height:height
+//   }
+//   self.image.src = imgSrc;
+//   self.draw = function(){
+//     // var x = WIDTH / 2 - player.x;
+//     // var y = HEIGHT / 2 - player.y;
+//     var x = canvas.width / 2 - player.x;
+//     var y = canvas.height / 2 - player.y;
+//     // canvas.width = window.innerWidth;
+//     // canvas.height = window.innerHeight;
+//     ctx.drawImage(self.image,0,0,self.image.width,self.image.height,0,0,self.image.width * 2,self.image.height * 2);
+//   }
+//   return self;
+// }
+
+// currentMap = CreateMaps("field","./images/Map3.jpg",1500,840);
+
 ///////////Entity//////////////
 var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
   // And the computer said...create this
@@ -153,12 +137,30 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
     ctx.save();
     var x = self.x - self.width / 2;
     var y = self.y - self.height / 2;
-    // ctx.drawImage(self.img,x,y);
+    ctx.drawImage(self.img,x,y);
 
-    // ctx.drawImage(image,
-    //   cropStartX, cropStartY, cropWidth, cropHeight,
-    //   drawX,drawY,drawWidth,drawHeight);
-    ctx.drawImage(self.img,0, 0,self.img.width,self.img.height,x,y,self.width,self.height);
+    // ctx.fillRect(self.x-self.width/2,self.y-self.height/2,self.width,self.height);
+
+    //fixed position for self
+
+    // var x = self.x - player.x;
+    // var y = self.y - player.y;
+    //
+    // // x += WIDTH / 2;
+    // // y += HEIGHT / 2;
+    // x += canvas.width / 2;
+    // y += canvas.height / 2;
+    // // canvas.width = window.innerWidth;
+    // // canvas.height = window.innerHeight;
+    //
+    // x -= self.width / 2;
+    // y -= self.height / 2;
+    //
+    // // ctx.drawImage(image,
+    // //   cropStartX, cropStartY, cropWidth, cropHeight,
+    // //   drawX,drawY,drawWidth,drawHeight);
+    //
+    // ctx.drawImage(self.img,0, 0,self.img.width,self.img.height,x,y,self.width,self.height);
 
     ctx.restore();
   }
@@ -180,21 +182,29 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
       width: entity2.width,
       height: entity2.height
     }
+    // console.log("self");
+    // console.log(self);
+    // console.log("entity2");
+    // console.log(entity2);
     return testCollisionRect(rect1,rect2);
   }
-  if (self.testCollision){
-    console.log(self.type + " hit something");
-  }
+  // self.isColliding = function(){
+  // function to hold the action to take if collision is true
+  // }
+
+
+
   self.updatePosition = function(){
     self.x += self.speedX;
     self.y += self.speedY;
     // if greater than screen size change direction
     if (self.x < 0 || self.x > canvas.width){
-      self.speedX = - self.speedX;
+      self.speedX = -self.speedX;
     }
     if (self.y < 0 || self.y > canvas.height){
-      self.speedY = - self.speedY;
+      self.speedY = -self.speedY;
     }
+
   }
 // return the Entity
 // representing an object
@@ -243,28 +253,6 @@ var doggyList = {};
 // create the doggy object
 var Dog = function(id,x,y,speedX,speedY,width,height){
   var self = Actor("dog",id,x,y,speedX,speedY,width,height,10,1,Img.dog);
-
-  // var super_update = self.update;
-  // self.update = function(){
-  //   super_update();
-  //   self.performAttack(self);
-  // }
-  // check to see if the dog collides with object
-
-  // FIX THIS
-  // var isColliding = player.testCollision(self);
-  // if (isColliding){
-  //   console.log("OUCH...!! dog hit player");
-  //   player.hp = player.hp - 1;
-  // }
-  // for (var key in obstacleList){
-  //   var isColliding = self.testCollision(obstacleList[key]);
-  //       if (isColliding){
-  //         console.log("dog collides with obstacle");
-  //         // console.log("redirect dog");
-  //       }
-  // }
-
   doggyList[id] = self;
 }
 // set up and place dog object
@@ -272,10 +260,20 @@ var randomlyGenerateDog = function(){
   var id = Math.random();
   var x = Math.random() * canvas.width;
   var y = Math.random() * canvas.height;
-  var width = 30;
-  var height = 30;
-  var speedX = 3 + Math.random() * 5;
-  var speedY = 3 + Math.random() * 5;
+  var width = 80;
+  var height = 80;
+  // var speedX = 3 + Math.random() * 5;
+  // var speedY = 3 + Math.random() * 5;
+
+
+
+
+  var speedX = 1;
+  var speedY = 1;
+
+
+
+
 
   Dog(id,x,y,speedX,speedY,width,height)
 }
@@ -287,7 +285,8 @@ var playerList = {};
 // player object
 var Player = function(){
   var id = Math.random();
-  var self = Actor("player",id,50,40,30,5,20,20,10,1,Img.boy);
+  var self = Actor("player",id,50,40,30,5,60,80,10,1,Img.boy);
+  // overriding the default action of the entity class
   self.updatePosition = function(){
     if (self.pressingRight){
       self.x += 10;
@@ -316,6 +315,12 @@ var Player = function(){
       self.y = canvas.height - self.height / 2;
     }
   }
+
+
+
+
+
+
   // super update overriding default functionality
   var super_update = self.update;
   self.update = function(){
@@ -329,24 +334,47 @@ var Player = function(){
     }
   }
   // var super_collision = self.testCollision;
-  // self.testCollision = function(entity2){
-  //   super_collision();
-  //   console.log(entity2.type);
-  //   if (entity2.type === "dog"){
-  //     console.log("Player hit dog");
-  //     player.hp -= 5;
-  //     player.stkSp -= 1;
+  // self.testCollision = function(){
+  //   super_collision(entity2);
+  //   if (self.isColliding){
+  //     var impactWith = entity2.type;
+  //     // who is intity two
+  //     if (entity2.combatType === "poopie"){
+  //     //   // for (var key2 in player){
+  //     //     // test for collision with player
+  //     //       var isColliding = player.testCollision(poopyList[key]);
+  //     //       if (isColliding) {
+  //             console.log("SHIT...you stepped in it.");
+  //     //         console.log("score subtraction");
+  //     //         console.log("player hp subtraction");
+  //     //         toRemove = true;
+  //     //         delete poopyList[key];
+  //     //         break
+  //     //
+  //     //     }
+  //       }
+  //
+  //     // if (impactwith.type === "poopie"){
+  //       console.log(" i hit the " + impactWith);
+  //     // }
   //   }
+  //
   // }
+
+
+
+
+
+
   self.pressingDown = false;
   self.pressingUp = false;
   self.pressingLeft = false;
   self.pressingRight = false;
+  self.score = Gameboard.score;
 
 // return the Player object
   playerList[id] = self;
   return self;
-
 }
 
 ///////////Upgrades//////////////
@@ -356,58 +384,34 @@ var upgradesList = {};
 // create upgrade object
 var Upgrade = function(id,x,y,speedX,speedY,width,height,category,img){
   var self =  Actor("upgrade",id,x,y,speedX,speedY,width,height,10,1,img);
-  self.toRemove = false;
+  self.category = category;
+  self.timer = 0;
+  // // super update overriding default functionality
   var super_update = self.update;
   self.update = function(){
     super_update();
-    // self.timer++;
-    if (self.stkCounter > 100){
-      self.toRemove = true;
-    }
-    if (self.toRemove){
-      delete upgradesList[self.id];
+    console.log("super_update called");
+    for (player in playerList){
+      var isColliding = self.testCollision(player);
+      console.log(isColliding);
+          // if (isColliding) {
+          //
+          //   if (upgradesList[key].category === "score"){
+          //     console.log("YEAH...!!");
+          //     GameBoard.score += 100;
+          //     self.toBeRemoved = true;
+          //   }
+          //   if (upgradesList[key].category === "stkSp") {
+          //     console.log("YEAH...!!");
+          //     dog.stkSp += 3;
+          //     self.toBeRemoved = true;
+          //   }
+          // }
     }
   }
-  // FIX THIS
-  // var isColliding = player.testCollision(self);
-  // if (isColliding){
-  //   toRemove = true;
-  //   if (self.category === "score"){
-  //     console.log("YEAH score bonus");
-  //     player.score += 1000;
-  //   }
-  //   if (self.category === "health"){
-  //     console.log("YEAH health bonus");
-  //     player.hp += 10;
-  //   }
-  //   if (self.category === "speed"){
-  //     console.log("YEAH speed bonus");
-  //     player.stkSp += 3;
-  //   }
-  // }
-  // FIX THIS
-  // var super_collision = self.testCollision;
-  // self.testCollision = function(entity2){
-  //   super_collision();
-  //   console.log(entity2.type);
-  //     if (entity2.type === "player"){
-  //       self.toRemove = true;
-  //       if (entity2.category === "score"){
-  //         console.log("YEAH score bonus");
-  //         player.score += 1000;
-  //       }
-  //       if (entity2.category === "health"){
-  //         console.log("YEAH health bonus");
-  //         player.hp += 10;
-  //       }
-  //       if (entity2.category === "speed"){
-  //         console.log("YEAH speed bonus");
-  //         player.stkSp += 3;
-  //       }
-  //     }
-  // }
-  self.category = category;
-  // self.timer++;
+
+
+
   // add the item to the list
   upgradesList[id] = self;
 };
@@ -419,27 +423,26 @@ var randomlyGenerateUpgrade = function(){
   var y = Math.random() * canvas.height;
   var speedX = 0;
   var speedY = 0;
-  var width = 10;
-  var height = 10;
+  var width = 50;
+  var height = 50;
   var category;
   var img;
 
   var random = Math.random();
-  if (random < 0.5){
+  if (random < 0.3){
     var category = "score";
     var img = Img.upgrade1;
-  }
-  // else if (random < 0.5) {
-  //   var category = "speed";
-  //   var img = Img.upgrade2;
-  // }
-  else {
+  } else if (random < 0.7) {
+    var category = "speed";
+    var img = Img.upgrade2;
+  } else {
     var category = "health";
     var img = Img.upgrade3;
   }
   // make a new upgrade
   Upgrade(id,x,y,speedX,speedY,width,height,category,img);
 };
+
 
 ///////////Obstacle//////////////
 // create the obstacle list
@@ -448,8 +451,10 @@ var obstacleList = {};
 var Obstacle = function(){
   // create tree
   // Entity = function(type,id,x,y,speedX,speedY,width,height,img)
+  // var tree = Entity("tree","myId",(Math.random() * WIDTH),
+  // (Math.random() * HEIGHT),0,0,60,60,Img.tree);
   var tree = Entity("tree","myId",(Math.random() * canvas.width),
-  (Math.random() * canvas.height),0,0,15,15,Img.tree);
+  (Math.random() * canvas.height),0,0,60,60,Img.tree);
   // var tree = Entity("trashCan",id,x,y,speedX,speedY,width,height,img);
   // var dogHouse = Entity("dogHouse",id,x,y,speedX,speedY,width,height,img);
   // var trashCan = Entity("trashCan",id,x,y,speedX,speedY,width,height,img);
@@ -457,8 +462,8 @@ var Obstacle = function(){
 
   // {
   //   id: Math.random(),
-  //   x: Math.random() * canvas.width,
-  //   y: Math.random() * canvas.height,
+  //   x: Math.random() * WIDTH,
+  //   y: Math.random() * HEIGHT,
   //   speedX: 0,
   //   speedY: 0,
   //   width: 15,
@@ -470,8 +475,8 @@ var Obstacle = function(){
   // // create dog house
   // var dogHouse = {
   //   id: Math.random(),
-  //   x: Math.random() * canvas.width,
-  //   y: Math.random() * canvas.height,
+  //   x: Math.random() * WIDTH,
+  //   y: Math.random() * HEIGHT,
   //   speedX: 0,
   //   speedY: 0,
   //   width: 15,
@@ -483,8 +488,8 @@ var Obstacle = function(){
   // // create trash can
   // var trashCan = {
   //   id: Math.random(),
-  //   x: Math.random() * canvas.width,
-  //   y: Math.random() * canvas.height,
+  //   x: Math.random() * WIDTH,
+  //   y: Math.random() * HEIGHT,
   //   speedX: 0,
   //   speedY: 0,
   //   width: 15,
@@ -495,13 +500,7 @@ var Obstacle = function(){
   //   capacity: 10
   // }
   //
-  // // check to see if the player collects upgrade
-  // var isColliding = testCollisionEntity(obstacleList[key],Player);
-  //     if (isColliding){
-  //       console.log("player collides with obstacle");
-  //       // console.log("score subtraction");
-  //       // console.log("player drops any held objects");
-  //     }
+
 
   // add to obstacleList
   obstacleList[tree.id] = tree;
@@ -509,51 +508,31 @@ var Obstacle = function(){
   // obstacleList[dogHouse.id] = dogHouse;
 };
 
+
 ///////////Poop//////////////
 // create poopy list
 var poopyList = {};
 // create poop object
-var Poopy = function(id,x,y,speedX,speedY,width,height,scoops){
-  var self = Actor("poop",id,x,y,speedX,speedY,width,height,2,0,Img.poop);
-  // Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img)
+var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
+  var self = Actor("poopie",id,x,y,speedX,speedY,width,height,2,0,Img.poop);
+  self.combatType = combatType;
+
+
+  // FIX THIS
   // var super_update = self.update;
   // self.update = function(){
   //   super_update();
-  //   var toRemove = false;
-    // if (self.timer > 75){
-    //   toRemove = true;
-    // }
-    // if (player.poopCollected){
-    //   toRemove = true;
-    //   console.log("player has poop");
-    //   // do some other stuff
-    //   // remove but do not delete
-    //   // if player drops place back on board
-    //   // doc player set safety time out
-    // }
-    // test for collision with player
-    // doc points for steppig in it
-    // var isColliding = self.testCollision(player);
-    //     if (isColliding){
-    //       console.log("player stepped in me");
-    //       toRemove = true;
-    //       // console.log("score subtraction");
-    //       // console.log("player speed subtraction");
-    //       // increase dog speed
-    //     }
-    // // check to see if the dog collides with object
-    // for (var key2 in doggyList){
-    //   var isColliding = self.testCollision(doggyList[key2]);
-    //       if (self.isColliding){
-    //         console.log("dog collides with poop");
-    //         // console.log("redirect dog");
-    //       }
-    // }
-    // if (toRemove){
-    //   delete poopyList[self.id];
-    // }
+  //   self.timer++;
+  //   self.toRemove = false;
+  //   if (self.timer > 75){
+  //     self.toRemove = true;
+  //   }
   // }
+
+
+
   self.timer = 0;
+  self.toBeRemoved = false;
   poopyList[id] = self;
 }
 
@@ -573,8 +552,16 @@ var generatePoop = function(actor,overrideAngle){
   }
   var speedX = 0;
   var speedY = 0;
-  Poopy(id,x,y,speedX,speedY,width,height,scoops);
+
+
+// FIX THIS
+
+// var spdX = Math.cos(angle/100*Math.PI)*5;
+// var spdY = Math.sin(angle/100*Math.PI)*5;
+  Poopy(id,x,y,speedX,speedY,width,height,actor.type);
 }
+
+
 ///////////GAMEPLAY//////////////
 // test for collision rectangle
 var testCollisionRect = function(rect1, rect2){
@@ -585,13 +572,93 @@ var testCollisionRect = function(rect1, rect2){
 };
 
 var safeZone = function(){};
+
+
+
+
+
+
+var actionOnImpact = function(){
+    // var super_update = self.update;
+    // self.update = function(){
+    //   super_update();
+    //   if (self.stkCounter > 200){
+    //     toRemove = true;
+    //   }
+    //   var toRemove = false;
+    //   var isColliding = self.testCollision(player);
+    //       if (isColliding) {
+    //         toRemove = true;
+    //         if (self.category === "score"){
+    //           console.log("YEAH...!! 100+");
+    //           GameBoard.score += 100;
+    //         }
+    //         if (self.category === "stkSp") {
+    //           console.log("YEAH...!! your health is restored");
+    //           dog.stkSp += 3;
+    //         }
+    //         // kill the entity
+    //         delete upgradeList[self.id];
+    //       }
+    //   if (toRemove){
+    //     delete upgradesList[self.id];
+    //   }
+    // }
+
+
+    //
+
+    // if (poopyList[key].combatType === "poopie"){
+    //   // for (var key2 in player){
+    //     // test for collision with player
+    //       var isColliding = player.testCollision(poopyList[key]);
+    //       if (isColliding) {
+    //         console.log("SHIT...you stepped in it.");
+    //         console.log("score subtraction");
+    //         console.log("player hp subtraction");
+    //         toRemove = true;
+    //         delete poopyList[key];
+    //         break
+    //
+    //     }
+    //   // }
+    //
+    //
+    //   var isColliding = player.testCollision(doggyList[key]);
+    //   if (isColliding) {
+    //     console.log("OUCH hit by the dog...!")
+    //     player.hp = player.hp - 1;
+    //   }
+    //
+    //
+    //   // check to see if the player collects upgrade
+    //     var isColliding = player.testCollision(upgradesList[key]);
+    //       if (isColliding) {
+    //         console.log(player +" hit "+ upgradesList[key])
+    //         if (upgradesList[key].category === "score"){
+    //           console.log("YEAH...!!");
+    //           player.score += 100;
+    //         }
+    //         if (upgradesList[key].category === "stkSp") {
+    //           console.log("YEAH...!!");
+    //           player.stkSp += 3;
+    //         }
+    //         // kill the entity
+    //         delete upgradesList[key];
+    //       }
+
+}
+
+
 ///////////UPDATE ANIMATION//////////////
 var updateGame = function(){
   // clear the board
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  // ctx.clearRect(0,0,WIDTH,HEIGHT);
+  // currentMap.draw();
   Gameboard.frameCount++;
-  // create new upgrade every 8 seconds
-  if (Gameboard.frameCount % 200 === 0) {
+  // create new upgrade
+  if (Gameboard.frameCount % 100 === 0) {
     randomlyGenerateUpgrade();
   }
   // create poop every 3 seconds
@@ -609,18 +676,63 @@ var updateGame = function(){
   // for the poops
   for (var key in poopyList){
     poopyList[key].update();
+    poopyList[key].timer++;
+    // poopyList[key].testCollision();
+    // if (poopyList[key].timer > 75){
+    //   delete poopyList[key];
+    // }
+
+    // test for collision with player
+    var isColliding = poopyList[key].testCollision(player);
+    if (isColliding) {
+      console.log("SHIT...you stepped in it.");
+      toRemove = true;
+      delete poopyList[key];
+      break
+    }
   }
+
+
   // for the dog
-  // for (var key in doggyList){
-  //   doggyList[key].update();
-  // }
-  // for obstacleList
-  for (var key in obstacleList){
-    obstacleList[key].update();
+  for (var key in doggyList){
+    doggyList[key].update();
+    // check to see if the player collects upgrade
+
   }
+  // for obstacleList
+
+  // for (var key in obstacleList){
+  //   obstacleList[key].update();
+  //   // check to see if the player collects upgrade
+  //     var isColliding = player.testCollision(obstacleList[key]);
+  //       if (isColliding) {
+  //         if (obstacleList[key].category === "trashCan") {
+  //           console.log("YEAH...drop that shit!!");
+  //           player.stkSp += 5;
+  //           player.score += 1000;
+  //         } else {
+  //           console.log("OUCH you hit an obstacle...!!");
+  //           player.stkSp -= 1;
+  //           player.score -= 10;
+  //           player.hp -= 1;
+  //         }
+  //         // kill the entity
+  //         delete upgradesList[key];
+  //       }
+  // }
+  //
+
   // for upgradesList
   for (var key in upgradesList){
+    upgradesList[key].timer++;
     upgradesList[key].update();
+  }
+  // kill the entity
+  if (upgradesList[key].toBeRemoved){
+    delete upgradesList[key];
+  }
+  if (upgradesList[key].timer > 200){
+    delete upgradesList[key];
   }
 };
 
@@ -644,7 +756,7 @@ var startNewGame = function(){
 
 // start the game
 player = Player();
-Gameboard.playerArray.push(player);
+// Gameboard.playerArray.push(player);
 startNewGame();
 
 // set temp animation
@@ -716,8 +828,8 @@ $(document).ready(function(){
 
     // event listen for window size
     // window.addEventListener("resize", function(){
-        // canvas.width = window.innerWidth;
-        // canvas.height = window.innerHeight;
+        // WIDTH = window.innerWidth;
+        // HEIGHT = window.innerHeight;
         // init();
         // update();
     // });
