@@ -296,7 +296,8 @@ var randomlyGenerateDog = function(){
 var upgradeList = {};
 var Upgrade = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
-  self.category = category
+  self.category = category;
+  self.toBeRemoved = false;
   upgradeList[id] = self;
 }
 
@@ -331,11 +332,12 @@ var poopieList = {};
 // create poop object
 var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   var self = Actor("poopie",id,x,y,speedX,speedY,width,height,2,1,Img.poop);
+  self.toBeRemoved = false;
   self.combatType = combatType;
 //FIX THIS
   self.onDeath = function(){
   // set logic
-    delete poopieList[key];
+    self.toBeRemoved = true;
   }
 // FIX THIS
   // var super_update = self.update;
@@ -594,7 +596,7 @@ var updatePoopie = function(){
         player.score += 100;
         if (player.poopArray.length < 10){
           player.poopArray.push(poopieList[key]);
-          
+          // toBeRemoved logic
           delete poopieList[key];
         }
       }
