@@ -492,6 +492,8 @@ var update = function(){
     player.update();
     ctx.fillText(player.hp + " Hp", 0, 30);
     ctx.fillText("Score: " + Gameboard.score, 200, 30);
+    // update players score
+    
     //////////////////////////////
     //////<<<< GAME OVER >>>>/////
     //////////////////////////////
