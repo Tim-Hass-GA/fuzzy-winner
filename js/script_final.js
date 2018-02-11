@@ -230,18 +230,6 @@ var Player = function(){
       }
   }
 
-  // super update overriding default functionality
-  var super_update = self.update;
-  self.update = function(){
-    super_update();
-    if (self.hp <= 0){
-      var timeSurvied = Date.now() - Gameboard.gameStartTime;
-      Gameboard.gameStopTime = timeSurvied;
-      console.log("you lost @ " +timeSurvied+ " ms.");
-      // player.performSpecialAttack();
-      startNewGame();
-    }
-  }
     self.pressingDown = false;
     self.pressingUp = false;
     self.pressingRight = false;
@@ -355,7 +343,7 @@ var generatePoop = function(actor,overrideAngle){
   if (overrideAngle !== undefined){
     angle = overrideAngle;
   } else {
-    angle = actor.aimAngle;
+    angle = -actor.aimAngle;
   }
   var speedX = 0;
   var speedY = 0;
@@ -520,7 +508,6 @@ var update = function(){
       // doggyList[key].preformAttack();
     }
 
-
     // for the dog
 
     ////////UPGRADES//////
@@ -544,11 +531,11 @@ var update = function(){
           delete upgradeList[key];
         }
     }
+    // end of upgrades
 
     ////////obstacle//////
     for (var key in obstacleList){
       obstacleList[key].update();
-
     }
 
 }
@@ -561,9 +548,9 @@ var startNewGame = function(){
   Gameboard.frameCount = 0;
   Gameboard.score = 0;
   player.score = 0;
-  enemyList = {};
-  upgradeList = {};
-  bulletList = {};
+  doggyList = {};
+  upgradesList = {};
+  obstacleList = {};
 
   randomlyGenerateUpgrade();
   randomlyGenerateDog();
