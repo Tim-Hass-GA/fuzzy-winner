@@ -262,19 +262,12 @@ var randomlyGenerateDog = function(){
   var y = Math.random() * canvas.height;
   var width = 80;
   var height = 80;
-  // var speedX = 3 + Math.random() * 5;
-  // var speedY = 3 + Math.random() * 5;
 
-
-
-
+// FIX THIS
+// var speedX = 3 + Math.random() * 5;
+// var speedY = 3 + Math.random() * 5;
   var speedX = 1;
   var speedY = 1;
-
-
-
-
-
   Dog(id,x,y,speedX,speedY,width,height)
 }
 
