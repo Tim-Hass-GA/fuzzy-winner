@@ -1,5 +1,4 @@
-console.log("final is here adjust 1");
-
+console.log("final is here adjust 2");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
@@ -49,13 +48,13 @@ Gameboard = {
 // load game board images
 var Img = {};
 Img.dog = new Image();
-Img.dog.src = "./images/Dog1.png";
+Img.dog.src = "./images/Dog.png";
 // Img.dog.width;
 // Img.dog.heigth;
 Img.boy = new Image();
-Img.boy.src = "./images/Boyrun.png";
+Img.boy.src = "./images/Sprite.png";
 Img.poop = new Image();
-Img.poop.src = "./images/Poopie1.png";
+Img.poop.src = "./images/Pumpkin2.png";
 
 // Img.dogHouse = new Image();
 // Img.dogHouse.src = "./images/Dog.png";
@@ -76,8 +75,7 @@ Img.upgrade3.src = "./images/Apple.png";
 
 ///////// UTILITIES /////////
 var testCollisionRectRect = function(rect1, rect2){
-  // var distance = getDistanceBetweenEntity(entity1, entity2);
-  // return distance < 30;
+  // return distance
   return rect1.x <= rect2.x + rect2.width
     && rect2.x <= rect1.x + rect1.width
     && rect1.y <= rect2.y + rect2.height
@@ -105,9 +103,7 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
     ctx.save();
     var x = self.x - self.width / 2;
     var y = self.y - self.height / 2;
-    // ctx.drawImage(self.img,x,y);
     ctx.drawImage(self.img,0,0,self.img.width,self.img.height,x,y,self.width,self.height);
-
     ctx.restore();
   }
   self.getDistance = function(entity2){
@@ -116,8 +112,7 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
     return Math.sqrt(vx * vx + vy * vy);
   }
   self.testCollision = function(entity2){
-    // var distance = getDistanceBetweenEntity(entity1, entity2);
-    // return distance < 30;
+    // return distance
     var rect1 = {
       x:self.x-self.width/2,
       y:self.y-self.height/2,
@@ -133,7 +128,7 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
     return testCollisionRectRect(rect1,rect2);
   }
   self.updatePosition = function(){
-    // separated and moved to new function
+    // update self
     self.x += self.speedX;
     self.y += self.speedY;
     // if greater than screen size change direction
@@ -155,6 +150,7 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
     self.hp = hp;
     self.stkSp = stkSp;
     self.stkCounter = 0;
+    self.spriteAnimeCounter = 0;
     self.aimAngle = 0;
     // SUPER UPDATE //
     var super_update = self.update;
@@ -171,6 +167,7 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
         generatePoop(self);
         self.stkCounter = 0;
       }
+// make this more flexible
     }
     // SPECIAL
     self.preformSpecialAttack = function(){
@@ -188,8 +185,37 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
           self.stkCounter = 0;
         }
       }
-      self.onDeath = function(){}
 /// LOOK AT
+    }
+    // to be used within specific entity determines
+    // what happens to entity at end of life
+    self.onDeath = function(){}
+    self.draw = function(){
+      ctx.save();
+      var x = self.x - self.width / 2;
+      var y = self.y - self.height / 2;
+//       // for spriteSheet
+      var frameWidth = self.img.width / self.spriteFrameCols;
+      var frameHeight = self.img.height / self.spriteSheetRows;
+//       // use the mouse to determine direction of player
+      var aimAngle = self.aimAngle;
+      if (aimAngle < 0){
+        aimAngle = 360 + aimAngle;
+      }
+      var directionMod = self.right;
+      if (aimAngle >= 45 && aimAngle < 135){
+        directionMod = self.down;
+      } else if (aimAngle >= 135 && aimAngle < 225){
+        directionMod = self.left;
+      } else if (aimAngle >= 255 && aimAngle < 315){
+        directionMod = self.up;
+      }
+      var walkingMod = Math.floor(self.spriteAnimeCounter) % 4;
+      ctx.drawImage(self.img,
+        walkingMod*frameWidth,directionMod*frameHeight,
+        frameWidth,frameHeight,x,y,self.width,self.height);
+      ctx.restore();
+// // issues with moble here
     }
 //return
     return self;
@@ -204,11 +230,11 @@ var playerList = {};
 var Player = function(){
   var x = canvas.width / 2;
   var y = 0;
-  var self = Actor("player","id",x,y,30,5,40,60,100,1,Img.boy);
+  var self = Actor("player","id",x,y,30,5,60,80,5,1,Img.boy);
   // override default action of constructor
-  // self.preformAttack = function(){
-  //
-  // }
+// self.preformAttack = function(){
+//
+// }
   self.updatePosition = function(){
     // override test
       if (self.pressingRight){
@@ -243,6 +269,7 @@ var Player = function(){
     ////////////////////////////
     var timeSurvived = Date.now() - Gameboard.gameStartTime;
     console.log("you lost @ " + timeSurvived + " ms.");
+    Gameboard.gamePause = true;
     startNewGame();
   }
     self.pressingDown = false;
@@ -251,6 +278,13 @@ var Player = function(){
     self.pressingLeft = false;
     self.poopArray = [];
     self.score = 0;
+    self.spriteFrameCols = 4;
+    self.spriteSheetRows = 8;
+    self.spriteAnimeCounter += .2;
+    self.right = 3;
+    self.left = 2;
+    self.down = 1;
+    self.up = 4;
     return self;
 }
 /////////// PLAYER END //////////////
@@ -266,12 +300,19 @@ var Dog = function(id,x,y,speedX,speedY,width,height){
   self.update = function(){
     super_update();
     var isColliding = self.testCollision(player);
-      if (self.isColliding) {
-        console.log("OUCH...!!");
+      if (isColliding) {
+        console.log("OUCH... you hit the dog!!");
         player.hp -= 1;
-        player.stkSp -= 1;
+        player.stkSp -= .5;
       }
   }
+  self.spriteFrameCols = 4;
+  self.spriteSheetRows = 9;
+  self.spriteAnimeCounter += .2;
+  self.right = 2;
+  self.left = 4;
+  self.down = 1;
+  self.up = 3;
   doggyList[id] = self;
 }
 // set up and placement for dog object
@@ -296,8 +337,19 @@ var randomlyGenerateDog = function(){
 var upgradeList = {};
 var Upgrade = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
+  self.onDeath = function(){
+    // set logic
+      self.toBeRemoved = true;
+  }
   self.category = category;
   self.toBeRemoved = false;
+  self.spriteFrameCols = 1;
+  self.spriteSheetRows = 1;
+  self.spriteAnimeCounter += .2;
+  self.right = 1;
+  self.left = 1;
+  self.down = 1;
+  self.up = 1;
   upgradeList[id] = self;
 }
 
@@ -335,22 +387,28 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   self.toBeRemoved = false;
   self.combatType = combatType;
 //FIX THIS
-  self.onDeath = function(){
-  // set logic
-    self.toBeRemoved = true;
-  }
-// FIX THIS
-  // var super_update = self.update;
-  // self.update = function(){
-  //   super_update();
-  //   self.timer++;
-  //   self.toRemove = false;
-  //   if (self.timer > 75){
-  //     self.toRemove = true;
-  //   }
+  // self.onDeath = function(){
+  // // set logic
+  //   self.toBeRemoved = true;
   // }
+// FIX THIS
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    self.timer++;
+    self.toBeRemoved = false;
+    if (self.timer > 75){
+      self.toBeRemoved = true;
+    }
+  }
   self.timer = 0;
-  self.toBeRemoved = false;
+  self.spriteFrameCols = 5;
+  self.spriteSheetRows = 1;
+  self.spriteAnimeCounter += .2;
+  self.right = 1;
+  self.left = 2;
+  self.down = 1;
+  self.up = 2;
   poopieList[id] = self;
 }
 
@@ -383,6 +441,7 @@ var generatePoop = function(actor,overrideAngle){
 var obstacleList = {};
 var Obstacle = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
+  // SUPER UPDATE //
   var super_update = self.update;
   self.update = function(){
     super_update();
@@ -420,7 +479,7 @@ randomlyGenerateObstacle = function(){
 }
 
 ///////////GAME EVENT FUNCTIONS//////////////
-// Wheres the mouse??
+// Wheres the mouse
 var mouse = {
   x: undefined,
   y: undefined
@@ -430,7 +489,7 @@ document.onmousemove = function(mouse){
   var mouseX = mouse.clientX - 8;
   var mouseY = mouse.clientY - 8;
 
-  ////////////  this isn't working for me  ///////////////
+  ////////////  this isn't working for me ? ///////////////
   // var mouseX = mouse.clientX - document.getElementById('ctx').getBoundingClientRect().left;
   // var mouseY = mouse.clientY - document.getElementById('ctx').getBoundingClientRect().top;
   ////////////  this isn't working for me  ///////////////
@@ -507,15 +566,17 @@ var update = function(){
   }
   ctx.clearRect(0,0,canvas.width,canvas.height);
   Gameboard.frameCount++;
-  player.score++;
-  // add another enemy
-  // if (Gameboard.frameCount % 100 === 0){ //called every 4 seconds
+  // player.score++;
+  // add another dog
+  //called every 4 seconds
+  // if (Gameboard.frameCount % 100 === 0){
   //   randomlyGenerateDog();
   // }
   // add an upgrade
-  if (Gameboard.frameCount % 75 === 0){ //called every 3 seconds
-    randomlyGenerateUpgrade();
-  }
+  //called every 3 seconds
+  // if (Gameboard.frameCount % 75 === 0){
+  //   randomlyGenerateUpgrade();
+  // }
 
     // update the player
     player.update();
@@ -524,17 +585,6 @@ var update = function(){
     ctx.fillText("Strike Speed: " + player.stkSp, 1, 50);
     // ctx.fillText("Aim Angle: " + player.aimAngle, 1, 60);
     ctx.fillText("Poop Count: " + player.poopArray.length, 1, 70);
-
-    // update players score
-
-    //////////////////////////////
-    //////<<<< GAME OVER >>>>/////
-    //////////////////////////////
-    // if (player.hp <= 0){
-    //   var timeSurvived = Date.now()- Gameboard.gameStartTime;
-    //   console.log("you lost @ " + timeSurvived + " ms.");
-    //   startNewGame();
-    // }
 
     //////// DOG //////
     updateDoggie();
@@ -549,7 +599,6 @@ var update = function(){
     updatePoopie();
 }
 
-
 var updateDoggie = function(){
   for (var key in doggyList){
     doggyList[key].update();
@@ -560,6 +609,7 @@ var updateDoggie = function(){
 var updateUpgrade = function(){
   for (var key in upgradeList){
     upgradeList[key].update();
+// move this to upgrade override
     var isColliding = player.testCollision(upgradeList[key]);
       if (isColliding) {
         if (upgradeList[key].category === "score"){
@@ -591,10 +641,11 @@ var updateObstacle = function(){
 var updatePoopie = function(){
   for (var key in poopieList){
     poopieList[key].update();
+// move ths to poope override
     var isColliding = player.testCollision(poopieList[key]);
       if (isColliding) {
-        player.score += 100;
         if (player.poopArray.length < 10){
+          player.score += 10;
           player.poopArray.push(poopieList[key]);
           // toBeRemoved logic
           delete poopieList[key];
