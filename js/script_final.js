@@ -197,7 +197,9 @@ var player;
 var playerList = {};
 // // player object
 var Player = function(){
-  var self = Actor("player","id",50,40,30,5,60,80,10,1,Img.boy);
+  var x = canvas.width / 2;
+  var y = 0;
+  var self = Actor("player","id",x,y,30,5,40,60,10,1,Img.boy);
   // override default action of constructor
   self.updatePosition = function(){
     // override test
@@ -271,8 +273,8 @@ var randomlyGenerateDog = function(){
   var id = Math.random();
   var x = Math.random() * canvas.width;
   var y = Math.random() * canvas.height;
-  var width = 15;
-  var height = 15;
+  var width = 50;
+  var height = 50;
 
 // FIX THIS
 // var speedX = 3 + Math.random() * 5;
@@ -323,6 +325,7 @@ var poopyList = {};
 // create poop object
 var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   var self = Actor("poopie",id,x,y,speedX,speedY,width,height,2,0,Img.poop);
+  // Entity = function(type,id,x,y,spdX,spdY,width,height,hp,stkSp,color)
   self.combatType = combatType;
 
   // FIX THIS
@@ -370,8 +373,16 @@ var generatePoop = function(actor,overrideAngle){
 var obstacleList = {};
 var Obstacle = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
-  // Entity = function(type,id,x,y,spdX,spdY,width,height,hp,stkSp,color)
-
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    var isColliding = self.testCollision(player);
+      if (isColliding) {
+        // console.log("OUCH...hit an obstacle!!");
+        Gameboard.score -= 100;
+        player.hp -= 2;
+      }
+  }
   obstacleList[id] = self;
 }
 
@@ -379,8 +390,8 @@ randomlyGenerateObstacle = function(){
   var x = Math.random() * canvas.width;
   var y = Math.random() * canvas.height;
   var id = Math.random();
-  var width = 30;
-  var height = 30;
+  var width = 60;
+  var height = 80;
   var speedX = 0;
   var speedY = 0;
   var img;
@@ -475,7 +486,6 @@ document.oncontextmenu = function(event){
 
 
 ///////////UPDATE GAME//////////////
-
 // update game
 var update = function(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -483,7 +493,7 @@ var update = function(){
   Gameboard.score++;
   // add another enemy
   // if (Gameboard.frameCount % 100 === 0){ //called every 4 seconds
-  //   randomGenerateEnemy();
+  //   randomlyGenerateDog();
   // }
   // add an upgrade
   if (Gameboard.frameCount % 75 === 0){ //called every 3 seconds
@@ -507,8 +517,7 @@ var update = function(){
     for (var key in doggyList){
       doggyList[key].update();
       // check to see if the player collects upgrade
-      doggyList[key].preformAttack();
-
+      // doggyList[key].preformAttack();
     }
 
 
@@ -519,17 +528,16 @@ var update = function(){
       upgradeList[key].update();
       var isColliding = player.testCollision(upgradeList[key]);
         if (isColliding) {
-
           if (upgradeList[key].category === "score"){
-            console.log("YEAH...!!");
+            console.log("YEAH...score++!!");
             Gameboard.score += 100;
           }
           if (upgradeList[key].category === "stkSp") {
-            console.log("YEAH...!!");
+            console.log("YEAH... speed bonus!!");
             player.stkSp += 3;
           }
           if (upgradeList[key].category === "health") {
-            console.log("YEAH...!!");
+            console.log("YEAH... health bonus!!");
             player.hp += 3;
           }
           // kill the entity
@@ -538,37 +546,11 @@ var update = function(){
     }
 
     ////////obstacle//////
-    // for (var key in obstacleList){
-    //   obstacleList[key].update();
-    //   bulletList[key].timer++;
-    //
-    //   quick switch for testing
-    //   var toRemove = false;
-    //   if (bulletList[key].timer > 75){
-    //     toRemove = true;
-    //     // test and move
-    //     // delete bulletList[key];
-    //     // continue;
-    //   }
-    //   for (var key2 in enemyList){
-    //     // bullet  remove
-    //     // you can always comment out to test
-    //
-    //     // var isColliding = bulletList[key].testCollision(enemyList[key2]);
-    //     //   if (isColliding) {
-    //     //     console.log("BANG...!!");
-    //     //     // Gameboard.score += 100;
-    //     //     // kill the entity
-    //     //     toRemove = true;
-    //     //     // delete bulletList[key];
-    //     //     delete enemyList[key2];
-    //     //     break;
-    //     //   }
-    //   }
-    //   if (toRemove){
-    //     delete bulletList[key];
-    //   }
-    // }
+    for (var key in obstacleList){
+      obstacleList[key].update();
+
+    }
+
 }
 ///////////UPDATE//////////////
 
@@ -605,13 +587,13 @@ $(document).ready(function(){
   // });
 
   // event listener for resize of the screen
-  window.addEventListener("resize", function(){
-      // when the screen resizes redraw the image
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      // init();
-      update();
-  });
+  // window.addEventListener("resize", function(){
+  //     // when the screen resizes redraw the image
+  //     canvas.width = window.innerWidth;
+  //     canvas.height = window.innerHeight;
+  //     // init();
+  //     update();
+  // });
 
   // for click events
   // canvas.addEventListener("click", function(event) {
