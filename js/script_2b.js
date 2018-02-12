@@ -8,8 +8,7 @@ console.log("script_2b.js is here player control");
 // the objective of the game is to keep the area clean, so
 // Brian can have a nice place to have fun
 
-// the game begins with one poop on the board
-// there are 3 levels to the current version of the game
+// the game begins with one dog on the board
 // the game is over if more than x# of poops are left on the GameBoard (varies per level)
 // the game is over when a player reaches 10 points 3 times or the game reaches 10 points
 // the game is timed every 2 minutes the game gets a point

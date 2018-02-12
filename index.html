@@ -2,13 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>fuzzy winner</title>
+    <title>Pooper Scooper</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     <!--Import Local CSS Stylesheet -->
     <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
@@ -16,115 +17,82 @@
     <header id="header" class="blue-grey lighten-1 white-text">
       <div class="container black">
         <div class="row flow-text">
-          <!-- <div class=""> -->
-            <div class="col s5 m4 game_info ">
-              <h2 class="logo ">Pooper Scooper</h2>
+          <div class="col s5 m5 game_info ">
+            <h2 class="logo flow-text">Pooper Scooper</h2>
+          </div>
+          <div class="col s3 m3 game_controls game_info amber lighten-1">
+            <div class="black-text">
+            <p class="flow-text">Game</p>
+            <p class="flow-text">Level: <span id="game_level">0</span></p>
+            <button type="button" class="purple waves-effect waves-light btn tooltipped flow-text hide-on-small-only" data-tooltip="Start or Pause Game" data-position="top" onclick="pauseGame()">Start/Pause</button>
             </div>
-          <!-- </div> -->
-          <!-- <div class=""> -->
-            <div class="col s3 m4 game_controls game_info amber lighten-1">
-              <!-- Switch -->
-              <div class="game_controls black-text">
-              <p>Game Level</p>
-              <p>Level: <span id="game_level">0</span></p>
-              <button type="button" id="new_game" class="purple waves-effect waves-light btn" onclick="startNewGame">New Game</button>
-              </div>
-            </div>
-          <!-- </div> -->
-          <!-- <div class=""> -->
+          </div>
           <div id="player_" class="col s4 m4 player_ game_info">
             <p>Player</p>
-            <ul>
+            <ul class="player_">
               <li>Score: <span id="player_score">0</span></li>
               <li>Health: <span id="player_health">0</span></li>
-              <li>Poop Bags: <span id="player_poo_count">0</span></li>
+              <li>Full Bags: <span id="player_poo_count">0</span></li>
             </ul>
           </div>
-          <!-- </div> -->
         </div>
-      <!-- </div> -->
-
     </header>
     <main class="row">
-      <!-- <div class="container"> -->
-        <!-- <div class="row"> -->
-          <!-- <div class="col s12"> -->
-          <!-- <canvas id="canvas" class="canvas col s12"></canvas> -->
-          <canvas id="canvas" class="canvas"></canvas>
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
+      <canvas id="canvas" class="canvas"></canvas>
     </main>
-    <!-- <footer class="page-footer blue-grey lighten-1"> -->
     <footer>
-
-      <!-- <div class="container"> -->
         <div class="row">
           <div class="col s12 l2">
-            <!-- Modal Trigger -->
-            <!-- <a class="waves-effect waves-light btn-flat modal-trigger amber lighten-1" href="#modal1"><span class="about">About</span></a> -->
-            <!-- Modal Structure -->
             <div id="modal1" class="modal bottom-sheet">
               <div class="modal-content black white-text">
-                <h4>About the Game</h4>
+                <h4>Pooper Scooper</h4>
+                <h5>About the Game</h5>
+                <p>Your dog Brian likes to have a clean area to run, play, and jump in.
+                  The objective of the game is to keep the area clean, so you and Brian
+                  can have a nice place to have fun</p>
                 <ul>
-                  <li><i class="material-icons">directions_run</i>Use the keyboard to move the player to the object.</li>
-                  <li>While in the "Safe Zone" click the object to "collect" the object.</li>
-                  <li>WARNING: not to run into objects you can pick up - GAME OVER.</li>
-                  <li><i class="material-icons">directions_run</i>Take your "collected" objects to the "proper disposal" area.</li>
-                  <li>CAUTION: avoid running into static objects, you may drop "collected" objects.</li>
-                  <li>Obtaining 10 points unlocks the next level.</li>
-                  <li>If the game gets 10 points the game wins.</li>
+                  <li><i class="material-icons">directions_run</i> Use the keyboard to move the player around the board.</li>
+                  <li><i class="material-icons">directions_run</i> Collect as may objects as you can, once you've used all your poop bags you'll need to dispose of them.</li>
+                  <li><i class="material-icons">shopping_basket</i> Take your "collected" objects to the "proper disposal" area.</li>
+                  <li><i class="material-icons">warning</i> Avoid running into static objects.</li>
+                  <li><i class="material-icons">mood</i> Obtain 1000 points to win the game.</li>
                 </ul>
               </div>
               <div class="modal-footer amber lighten-1">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Got it..!</a>
               </div>
             </div>
-          <!-- </div> -->
-          <!-- Modal Structure -->
-          <div id="modal2" class="modal bottom-sheet">
-            <div class="modal-content black white-text">
-              <h4>Contact me</h4>
-              <ul>
-                <li><a class="btn-flat red"><i class="material-icons">photo_library</i> Flicker</a></li>
-                <li><a class="btn-flat purple"><i class="material-icons">smoke_free</i> Git Hub</a></li>
-                <li><a class="btn-flat green"><i class="material-icons">beach_access</i> Linkedin</a></li>
-              </ul>
+            <div id="modal2" class="modal bottom-sheet">
+              <div class="modal-content black white-text">
+                <h4>Contact me</h4>
+                <ul class="contact_me">
+                  <li><a><i class="material-icons">photo_library</i> Flicker</a></li>
+                  <li><a><i class="material-icons">smoke_free</i> Git Hub</a></li>
+                  <li><a><i class="material-icons">beach_access</i> Linkedin</a></li>
+                </ul>
+              </div>
+              <div class="modal-footer amber lighten-1">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Got it..!</a>
+              </div>
             </div>
-            <div class="modal-footer amber lighten-1">
-              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Got it..!</a>
-            </div>
-          </div>
-          <!-- <div class="col s10"> -->
-            <div class="fixed-action-btn">
+            <div class="scale-out fixed-action-btn">
               <a class="btn-floating btn-large black">
                 <i class="large material-icons">info</i>
               </a>
               <ul>
                 <li><a class="btn-floating black pulse modal-trigger" href="#modal2"><i class="material-icons">contacts</i></a></li>
                 <li><a class="btn-floating black pulse modal-trigger" href="#modal1"><i class="material-icons">directions_run</i></a></li>
-                <!-- <li><a class="btn-floating black pulse modal-trigger" href="#modal1"><i class="material-icons">info</i></a></li> -->
-                <!-- <li><a class="btn-floating black pulse"><i class="material-icons"></i></a></li> -->
               </ul>
             </div>
           </div>
         </div>
       </div>
     </footer>
-
     <!--Import minified jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-    <!--Import minified jQuery UI -->
-    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-        crossorigin="anonymous"></script> -->
     <!-- Compiled and minified JavaScript for Materalize -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <!--Import local JavaScript file -->
-    <!-- <script type="text/javascript" src="js/script.js"></script> -->
-    <!-- <script type="text/javascript" src="js/script_2.js"></script> -->
-    <!-- <script type="text/javascript" src="js/script_2b.js"></script> -->
     <script type="text/javascript" src="js/script_final.js"></script>
   </body>
 </html>
