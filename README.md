@@ -1,12 +1,20 @@
 # Pooper Scooper
 
 ![Game Screen Shot](/images/Game_Screen_Shot.png)
-Format: ![Game Screen Shot]
 
 ## About the game:
-Your dog Brian likes to have a clean area to run, play, and jump in
-the objective of the game is to keep the area clean, so you and
+Your dog Brian likes to have a clean area to run, play, and jump in.
+The objective of the game is to keep the area clean, so you and
 Brian can have a nice place to have fun in.
+
+## Technologies Used:
+* HTML
+* Canvas
+* CSS
+* Materalize
+* jQuery
+* JavaScript
+
 
 ### Bug list:
 Code
@@ -21,7 +29,7 @@ UI
 Code
 - [ ] Obstacle and Trashcan behaviors
 - [ ] Click event for player not currently in place
-- [ ] Improved user feedback
+- [ ] Improved user feedback for Game Wins / Losses
 UI
 - [ ] Keypad controls for mobile movement and click events
 
@@ -29,7 +37,6 @@ UI
 Code
 - [ ] More types of dogs
 - [ ] Logic for multiple types of attacks
-- [ ] More normalization of entity and actor behaviors
 UI
 - [ ] More styling  
 - [ ] Touch for Mobile
