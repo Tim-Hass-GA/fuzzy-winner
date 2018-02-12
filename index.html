@@ -14,36 +14,32 @@
   </head>
   <body>
     <header id="header" class="blue-grey lighten-1 white-text">
-      <div class="container black flow-text">
-        <div class="row">
+      <div class="container black">
+        <div class="row flow-text">
           <!-- <div class=""> -->
-            <div id="player_1" class="col s4 m4 leftSide game_info">
-              <p class="player_1">Player 1</p>
-              <p id="player_1_score">Score: 0</p>
-              <p id="player_1_status">Level: 0</p>
+            <div class="col s5 m4 game_info ">
+              <h2 class="logo ">Pooper Scooper</h2>
             </div>
           <!-- </div> -->
           <!-- <div class=""> -->
-            <div class="col s4 m4 game_controls game_info amber lighten-1">
+            <div class="col s3 m4 game_controls game_info amber lighten-1">
               <!-- Switch -->
-              <div class="switch game_controls">
-                <p class="flow-text black-text">Game Mode</p>
-                <label class="flow-text">
-                  1
-                  <input type="checkbox">
-                  <span class="lever black"></span>
-                  2
-                </label>
-              </div>
+              <div class="game_controls black-text">
+              <p>Game Level</p>
+              <p>Level: <span id="game_level">0</span></p>
               <button type="button" id="new_game" class="purple waves-effect waves-light btn" onclick="startNewGame">New Game</button>
+              </div>
             </div>
           <!-- </div> -->
           <!-- <div class=""> -->
-            <div id="player_2" class="col s4 m4 rightSide game_info">
-              <p class="player_2">Player 2</p>
-              <p id="player_2_score">Score: 0</p>
-              <p id="player_2_status">High Score: 0</p>
-            </div>
+          <div id="player_" class="col s4 m4 player_ game_info">
+            <p>Player</p>
+            <ul>
+              <li>Score: <span id="player_score">0</span></li>
+              <li>Health: <span id="player_health">0</span></li>
+              <li>Poop Bags: <span id="player_poo_count">0</span></li>
+            </ul>
+          </div>
           <!-- </div> -->
         </div>
       <!-- </div> -->

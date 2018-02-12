@@ -1,4 +1,4 @@
-console.log("final is here adjust 2");
+console.log("final is here adjust 3");
 
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
@@ -16,10 +16,10 @@ var canvas = document.getElementById("canvas");
 var ctx =  canvas.getContext("2d");
 ctx.font = '30px Arial';
 
-// canvas.width = window.innerWidth;
-// canvas.height = window.innerHeight;
-canvas.width = 500;
-canvas.height = 500;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+// canvas.width = 500;
+// canvas.height = 500;
 
 /////////// GAMEBOARD //////////////
 // set up the game board variables
@@ -54,7 +54,8 @@ Img.dog.src = "./images/Dog.png";
 Img.boy = new Image();
 Img.boy.src = "./images/Sprite.png";
 Img.poop = new Image();
-Img.poop.src = "./images/Pumpkin2.png";
+// Img.poop.src = "./images/Poops_Sheet.png";
+Img.poop.src = "./images/Poopie1.png";
 
 // Img.dogHouse = new Image();
 // Img.dogHouse.src = "./images/Dog.png";
@@ -64,8 +65,9 @@ Img.tree2 = new Image();
 Img.tree2.src = "./images/Tree2.png";
 Img.rock = new Image();
 Img.rock.src = "./images/Rock1.png";
-// Img.trashCan = new Image();
-// Img.trashCan.src = "./images/Dog.png";
+Img.trashCan = new Image();
+Img.trashCan.src = "./images/Trash_Can.png";
+
 Img.upgrade1 = new Image();
 Img.upgrade1.src = "./images/Pumpkin1.png";
 Img.upgrade2 = new Image();
@@ -147,14 +149,15 @@ var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
 ///////// ACTOR ///////
 Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
   var self = Entity(type,id,x,y,speedX,speedY,width,height,img);
-    self.hp = hp;
-    self.stkSp = stkSp;
-    self.stkCounter = 0;
-    self.spriteAnimeCounter = 0;
-    self.aimAngle = 0;
-    // SUPER UPDATE //
-    var super_update = self.update;
-    self.update = function(){
+  self.hp = hp;
+  self.stkSp = stkSp;
+  self.stkCounter = 0;
+  self.spriteAnimeCounter = 0;
+  self.aimAngle = 0;
+
+  // SUPER UPDATE //
+  var super_update = self.update;
+  self.update = function(){
       super_update();
       self.stkCounter += self.stkSp;
       if (player.hp <= 0){
@@ -231,7 +234,21 @@ var Player = function(){
   var x = canvas.width / 2;
   var y = 0;
   var self = Actor("player","id",x,y,30,5,60,80,5,1,Img.boy);
+  self.pressingDown = false;
+  self.pressingUp = false;
+  self.pressingRight = false;
+  self.pressingLeft = false;
+  self.poopBagArray = [];
+  self.score = 0;
+  self.spriteFrameCols = 4;
+  self.spriteSheetRows = 8;
+  self.spriteAnimeCounter += .2;
+  self.right = 3;
+  self.left = 2;
+  self.down = 1;
+  self.up = 4;
   // override default action of constructor
+  // make on click event for poop collection/disposal
 // self.preformAttack = function(){
 //
 // }
@@ -264,7 +281,6 @@ var Player = function(){
       }
   }
   self.onDeath = function(){
-    ////////////////////////////
     ////<<<< GAME OVER >>>>/////
     ////////////////////////////
     var timeSurvived = Date.now() - Gameboard.gameStartTime;
@@ -272,19 +288,7 @@ var Player = function(){
     Gameboard.gamePause = true;
     startNewGame();
   }
-    self.pressingDown = false;
-    self.pressingUp = false;
-    self.pressingRight = false;
-    self.pressingLeft = false;
-    self.poopArray = [];
-    self.score = 0;
-    self.spriteFrameCols = 4;
-    self.spriteSheetRows = 8;
-    self.spriteAnimeCounter += .2;
-    self.right = 3;
-    self.left = 2;
-    self.down = 1;
-    self.up = 4;
+// return self
     return self;
 }
 /////////// PLAYER END //////////////
@@ -295,6 +299,13 @@ var doggyList = {};
 // create the doggy object
 var Dog = function(id,x,y,speedX,speedY,width,height){
   var self = Actor("dog",id,x,y,speedX,speedY,width,height,20,1,Img.dog);
+  self.spriteFrameCols = 4;
+  self.spriteSheetRows = 9;
+  self.spriteAnimeCounter += .2;
+  self.right = 2;
+  self.left = 4;
+  self.down = 1;
+  self.up = 3;
   // SUPER UPDATE //
   var super_update = self.update;
   self.update = function(){
@@ -306,13 +317,6 @@ var Dog = function(id,x,y,speedX,speedY,width,height){
         player.stkSp -= .5;
       }
   }
-  self.spriteFrameCols = 4;
-  self.spriteSheetRows = 9;
-  self.spriteAnimeCounter += .2;
-  self.right = 2;
-  self.left = 4;
-  self.down = 1;
-  self.up = 3;
   doggyList[id] = self;
 }
 // set up and placement for dog object
@@ -337,10 +341,6 @@ var randomlyGenerateDog = function(){
 var upgradeList = {};
 var Upgrade = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
-  self.onDeath = function(){
-    // set logic
-      self.toBeRemoved = true;
-  }
   self.category = category;
   self.toBeRemoved = false;
   self.spriteFrameCols = 1;
@@ -350,6 +350,10 @@ var Upgrade = function(category,id,x,y,speedX,speedY,width,height,img){
   self.left = 1;
   self.down = 1;
   self.up = 1;
+  self.onDeath = function(){
+    // set logic
+      self.toBeRemoved = true;
+  }
   upgradeList[id] = self;
 }
 
@@ -385,6 +389,16 @@ var poopieList = {};
 var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   var self = Actor("poopie",id,x,y,speedX,speedY,width,height,2,1,Img.poop);
   self.toBeRemoved = false;
+  self.timer = 0;
+  self.spriteFrameCols = 1;
+  self.spriteSheetRows = 1;
+  self.spriteAnimeCounter += .2;
+  self.right = 1;
+  self.left = 1;
+  self.down = 1;
+  self.up = 1;
+  // this extra var is for extending enemy types
+  // this is a game upgrade example
   self.combatType = combatType;
 //FIX THIS
   // self.onDeath = function(){
@@ -401,14 +415,6 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
       self.toBeRemoved = true;
     }
   }
-  self.timer = 0;
-  self.spriteFrameCols = 5;
-  self.spriteSheetRows = 1;
-  self.spriteAnimeCounter += .2;
-  self.right = 1;
-  self.left = 2;
-  self.down = 1;
-  self.up = 2;
   poopieList[id] = self;
 }
 
@@ -419,14 +425,22 @@ var generatePoop = function(actor,overrideAngle){
   var y = actor.y;
   var width = 15;
   var height = 15;
+
+  // var postX = x.clientX - 8;
+  // var postY = y.clientY - 8;
+  // // adjust to relative to the object
+  // postX -= self.x;
+  // postY -= self.y;
+  // var angle = Math.atan2(postY,postX) / Math.PI * 180;
+
   var angle;
   if (overrideAngle !== undefined){
     angle = overrideAngle;
   } else {
-    angle = -actor.aimAngle;
+    angle = actor.aimAngle;
   }
-  var speedX = .5;
-  var speedY = .5;
+  var speedX = .75;
+  var speedY = .75;
 
 
 // FIX THIS
@@ -436,6 +450,8 @@ var generatePoop = function(actor,overrideAngle){
   Poopy(id,x,y,speedX,speedY,width,height,actor.type);
 }
 /////////// POOPIE END //////////////
+
+/////////// UPGRADES //////////////
 
 // list of upgrades
 var obstacleList = {};
@@ -478,13 +494,60 @@ randomlyGenerateObstacle = function(){
   Obstacle(category,id,x,y,speedX,speedY,width,height,img);
 }
 
-///////////GAME EVENT FUNCTIONS//////////////
-// Wheres the mouse
-var mouse = {
-  x: undefined,
-  y: undefined
+/////////// UPGRADES END //////////////
+
+
+/////////// TRASHCAN //////////////
+
+// list of upgrades
+var trashCanList = {};
+var TrashCan = function(category,id,x,y,speedX,speedY,width,height,img){
+  var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
+
+  // SUPER UPDATE //
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    var isColliding = self.testCollision(player);
+      if (isColliding) {
+        console.log("Yeah you are a nice citizen...!!");
+        player.score += 100;
+        player.hp += 2;
+        // for (key in player.poopBagArray) {
+        //
+        // }
+      }
+  }
+  trashCanList[id] = self;
 }
 
+randomlyGenerateTrashCan = function(){
+  var x = Math.random() * canvas.width;
+  var y = Math.random() * canvas.height;
+  var id = Math.random();
+  var width = 50;
+  var height = 50;
+  var speedX = 0;
+  var speedY = 0;
+  var img = Img.trashCan;
+  var category = "trashCan";
+
+  // extend functionality
+  // decide on 1 or 2 trash cans
+  var random = Math.random();
+  if (random < 0.5){
+    TrashCan(category,id,x,y,speedX,speedY,width,height,img);
+  } else {
+    TrashCan(category,id,x,y,speedX,speedY,width,height,img);
+    TrashCan(category,id,x,y,speedX,speedY,width,height,img);
+  }
+  // TrashCan(category,id,x,y,speedX,speedY,width,height,img);
+}
+
+/////////// TRASHCAN END //////////////
+
+
+///////////GAME EVENT FUNCTIONS//////////////
 document.onmousemove = function(mouse){
   var mouseX = mouse.clientX - 8;
   var mouseY = mouse.clientY - 8;
@@ -567,18 +630,22 @@ var update = function(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   Gameboard.frameCount++;
   // player.score++;
+
+  //////// GENERATE NEW ITEMS ////////
   // add another dog
-  //called every 4 seconds
-  // if (Gameboard.frameCount % 100 === 0){
+  // if (Gameboard.frameCount % 2000 === 0){
   //   randomlyGenerateDog();
   // }
   // add an upgrade
-  //called every 3 seconds
-  // if (Gameboard.frameCount % 75 === 0){
+  // if (Gameboard.frameCount % 1000 === 0){
+  //   randomlyGenerateUpgrade();
+  // }
+  // add an obstacle
+  // if (Gameboard.frameCount % 5000 === 0){
   //   randomlyGenerateUpgrade();
   // }
 
-    // update the player
+    //////// PLAYER ////////
     player.update();
     ctx.fillText(player.hp + " Hp", 1, 30);
     ctx.fillText("Score: " + player.score, 1, 40);
@@ -586,17 +653,23 @@ var update = function(){
     // ctx.fillText("Aim Angle: " + player.aimAngle, 1, 60);
     ctx.fillText("Poop Count: " + player.poopArray.length, 1, 70);
 
-    //////// DOG //////
+    //////// DOG ////////
     updateDoggie();
 
-    ////////UPGRADES//////
+    //////// UPGRADES ////////
     updateUpgrade();
 
-    //////// OBSTACLE //////
+    //////// OBSTACLE ////////
     updateObstacle();
 
-    ////////poopie//////
+    //////// POOPIE ////////
     updatePoopie();
+
+    //////// TRASHCAN ////////
+    updateTrashCan();
+
+    //////// PLAYER INFO ////////
+    updateGameData();
 }
 
 var updateDoggie = function(){
@@ -654,24 +727,42 @@ var updatePoopie = function(){
   }
 }
 
+
+var updateTrashCan = function(){
+  for (var key in trashCanList){
+    trashCanList[key].update();
+  }
+}
+
+var updateGameData = function(){
+  $("#game_level").textContent = Gameboard.level;
+  $("#player_score").textContent = player.score;
+  $("#player_health").textContent = player.hp;
+  $("#player_poo_count").textContent = player.poopBagArray.length;  
+}
 ///////////UPDATE//////////////
 
 /////////// START GAME //////////////
 var startNewGame = function(){
   player.hp = 10;
+  player.stkSp = 1;
+  player.score = 0;
+  player.poopArray = [];
+
   Gameboard.gameStartTime = Date.now();
   Gameboard.frameCount = 0;
   Gameboard.score = 0;
-  player.score = 0;
-  player.poopArray = [];
+
   doggyList = {};
   upgradesList = {};
   obstacleList = {};
   poopieList = {};
+  trashCanList = {};
 
   randomlyGenerateUpgrade();
   randomlyGenerateDog();
   randomlyGenerateObstacle();
+  randomlyGenerateTrashCan();
 }
 
 player = Player();

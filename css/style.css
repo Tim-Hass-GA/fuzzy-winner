@@ -36,26 +36,14 @@ header div p, footer div p {
 }
 
 .game_controls {
-  /* padding: .5em; */
+  margin: .2em 0;
   font-size: .8em;
 }
 
-.player_1 {
+.player_ {
   font-weight: 800;
   padding-top: .25em;
-}
-
-.leftSide {
-
-}
-
-.player_2 {
-  font-weight: 800;
-  padding-top: .25em;
-}
-
-.rightSide {
-
+  text-align: left;
 }
 
 .container .row {
@@ -67,6 +55,10 @@ div .row {
   /* padding: .4em 0 0; */
   margin: 0;
   width: 100%;
+}
+
+button {
+  margin: .5em;
 }
 
 main {
