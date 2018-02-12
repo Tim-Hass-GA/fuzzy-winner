@@ -1,5 +1,3 @@
-console.log("final is here adjust 3");
-
 // Tim Hass // Feb 2018 // GA - Project 1
 // Dedication: Brian Lifton Aug 2008 - May 2017
 
@@ -7,7 +5,6 @@ console.log("final is here adjust 3");
 // Your dog Brian likes to have a clean area to run, play, and jump in
 // the objective of the game is to keep the area clean, so you and
 // Brian can have a nice place to have fun in
-
 
 /////////// CODE START /////////////
 /////////////////////////////////
@@ -36,20 +33,14 @@ Gameboard = {
 }
 
 /////////// GAMEBOARD PIECES //////////////
-// load game board images
+// game board images
 var Img = {};
 Img.dog = new Image();
 Img.dog.src = "./images/Dog.png";
-// Img.dog.width;
-// Img.dog.heigth;
 Img.boy = new Image();
 Img.boy.src = "./images/Sprite.png";
 Img.poop = new Image();
-// Img.poop.src = "./images/Poops_Sheet.png";
 Img.poop.src = "./images/Poopie1.png";
-
-// Img.dogHouse = new Image();
-// Img.dogHouse.src = "./images/Dog.png";
 Img.tree = new Image();
 Img.tree.src = "./images/Tree1.png";
 Img.tree2 = new Image();
@@ -58,7 +49,6 @@ Img.rock = new Image();
 Img.rock.src = "./images/Rock1.png";
 Img.trashCan = new Image();
 Img.trashCan.src = "./images/Trash_Can.png";
-
 Img.upgrade1 = new Image();
 Img.upgrade1.src = "./images/Pumpkin1.png";
 Img.upgrade2 = new Image();
@@ -74,7 +64,6 @@ var testCollisionRectRect = function(rect1, rect2){
     && rect1.y <= rect2.y + rect2.height
     && rect2.y <= rect1.y + rect1.height;
 }
-
 
 ///////// ENTITY ///////
 var Entity = function(type,id,x,y,speedX,speedY,width,height,img){
@@ -158,35 +147,25 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
     // STANDARD
     self.preformAttack = function(){
       if (self.stkCounter > 50){
-        if (Math.random() < 0.5){
-          generatePoop(self);
-        } else {
-          generatePoop(self,self.aimAngle - 5);
-          generatePoop(self,self.aimAngle);
-          generatePoop(self,self.aimAngle + 5);
-          self.stkCounter = 0;
-        }
-
+        generatePoop(self);
         self.stkCounter = 0;
       }
-// make this more flexible
+      // make this more flexible
     }
     // SPECIAL
     self.preformSpecialAttack = function(){
-      // if (self.stkCounter > 150){
+      if (self.stkCounter > 150){
         // different scenarios
-        if (Math.random() < 0.5){
           for (var angle = 0; angle < 360; angle++){
             generatePoop(actor,angle);
+            self.stkCounter = 0;
           }
-        } else {
-          generatePoop(self,self.aimAngle - 5);
-          generatePoop(self,self.aimAngle);
-          generatePoop(self,self.aimAngle + 5);
-          self.stkCounter = 0;
-        }
-      // }
-/// LOOK AT
+          // different scenarios
+          // generatePoop(self,self.aimAngle - 5);
+          // generatePoop(self,self.aimAngle);
+          // generatePoop(self,self.aimAngle + 5);
+          // self.stkCounter = 0;
+      }
     }
     // to be used within specific entity determines
     // what happens to entity at end of life
@@ -195,10 +174,10 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
       ctx.save();
       var x = self.x - self.width / 2;
       var y = self.y - self.height / 2;
-//       // for spriteSheet
+      //       // for spriteSheet
       var frameWidth = self.img.width / self.spriteFrameCols;
       var frameHeight = self.img.height / self.spriteSheetRows;
-//       // use the mouse to determine direction of player
+      //       // use the mouse to determine direction of player
       var aimAngle = self.aimAngle;
       if (aimAngle < 0){
         aimAngle = 360 + aimAngle;
@@ -216,7 +195,7 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
         walkingMod*frameWidth,directionMod*frameHeight,
         frameWidth,frameHeight,x,y,self.width,self.height);
       ctx.restore();
-// // issues with moble here
+      // // issues with moble here
     }
 //return
     return self;
@@ -245,7 +224,7 @@ var Player = function(){
   self.left = 2;
   self.down = 1;
   self.up = 4;
-// SUPER UPDATE //
+  // SUPER UPDATE //
   var super_update = self.update;
   self.update = function(){
     super_update();
@@ -392,7 +371,7 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   self.left = 1;
   self.down = 1;
   self.up = 1;
-  // this extra var is for extending enemy types
+  // extra var to extend enemy types
   // this is a game upgrade example
   self.combatType = combatType;
   self.onDeath = function(){
@@ -400,7 +379,7 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
     self.okayToRemoved = true;
     self.toBeRemoved = true;
   }
-// FIX THIS
+  // SUPER UPDATE //
   var super_update = self.update;
   self.update = function(){
     super_update();
@@ -410,8 +389,8 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
     }
     var isColliding = self.testCollision(player);
       if (isColliding) {
-        // player can only carry 5 objects
-        if (player.poopArray.length < 5){
+        // player cannot carry more than 5 objects
+        if (player.poopArray.length <= 5){
           // push the object to the player array
           player.poopArray.push(self);
           self.onDeath();
@@ -443,9 +422,6 @@ var generatePoop = function(actor,overrideAngle){
   }
   var speedX = 1;
   var speedY = 1;
-// FIX THIS
-// var speedX = Math.cos(angle/100*Math.PI)*5;
-// var speedY = Math.sin(angle/100*Math.PI)*5;
   Poopy(id,x,y,speedX,speedY,width,height,actor.type);
 }
 /////////// POOPIE END //////////////
@@ -492,7 +468,6 @@ randomlyGenerateObstacle = function(){
 }
 /////////// UPGRADES END //////////////
 
-
 /////////// TRASHCAN //////////////
 // list of trash cans
 var trashCanList = {};
@@ -505,7 +480,8 @@ var TrashCan = function(category,id,x,y,speedX,speedY,width,height,img){
   self.update = function(){
     super_update();
     var isColliding = self.testCollision(player);
-      if (isColliding) {
+      if (isColliding && player.poopArray.length > 0) {
+        player.score++;
         player.poopArray = [];
       }
   }
@@ -532,9 +508,7 @@ randomlyGenerateTrashCan = function(){
     TrashCan(category,id,x,y,speedX,speedY,width,height,img);
     TrashCan(category,id,x,y,speedX,speedY,width,height,img);
   }
-  // TrashCan(category,id,x,y,speedX,speedY,width,height,img);
 }
-
 /////////// TRASHCAN END //////////////
 
 
@@ -542,12 +516,6 @@ randomlyGenerateTrashCan = function(){
 document.onmousemove = function(mouse){
   var mouseX = mouse.clientX - 8;
   var mouseY = mouse.clientY - 8;
-
-  ////////////  this isn't working for me ? ///////////////
-  // var mouseX = mouse.clientX - document.getElementById('ctx').getBoundingClientRect().left;
-  // var mouseY = mouse.clientY - document.getElementById('ctx').getBoundingClientRect().top;
-  ////////////  this isn't working for me  ///////////////
-
   // adjust to relative to the position of the player
   mouseX -= player.x;
   mouseY -= player.y;
@@ -610,7 +578,6 @@ document.oncontextmenu = function(event){
 }
 ///////////GAME EVENT FUNCTIONS END//////////////
 
-
 ///////////UPDATE GAME//////////////
 // update game
 var update = function(){
@@ -620,7 +587,6 @@ var update = function(){
   }
   ctx.clearRect(0,0,canvas.width,canvas.height);
   Gameboard.frameCount++;
-  // player.score++;
 
   //////// GENERATE NEW ITEMS ////////
   // add another dog
@@ -668,7 +634,7 @@ var updateDoggie = function(){
 var updateUpgrade = function(){
   for (var key in upgradeList){
     upgradeList[key].update();
-// move this to upgrade override
+    // move this to upgrade override
     var isColliding = player.testCollision(upgradeList[key]);
       if (isColliding) {
         if (upgradeList[key].category === "score"){
@@ -703,7 +669,6 @@ var updatePoopie = function(){
     if (poopieList[key].toBeRemoved){
       // toBeRemoved logic
       delete poopieList[key];
-      player.score += 10;
     }
   }
 }
@@ -776,12 +741,6 @@ $(document).ready(function(){
   //     // init();
   //     update();
   // });
-
-  // for click events
-  // canvas.addEventListener("click", function(event) {
-  //     // drawRectangle(ctx, event.offsetX, event.offsetY);
-  //     console.log("click is called");
-  //   });
 
   // the "href" attribute of the modal trigger
   // must specify the modal ID
