@@ -14,12 +14,11 @@ console.log("final is here adjust 3");
 // canvas object
 var canvas = document.getElementById("canvas");
 var ctx =  canvas.getContext("2d");
-ctx.font = '30px Arial';
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-// canvas.width = 500;
-// canvas.height = 500;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+canvas.width = 500;
+canvas.height = 500;
 
 /////////// GAMEBOARD //////////////
 // set up the game board variables
@@ -242,7 +241,6 @@ var Player = function(){
   self.score = 0;
   self.spriteFrameCols = 4;
   self.spriteSheetRows = 8;
-  self.spriteAnimeCounter += .2;
   self.right = 3;
   self.left = 2;
   self.down = 1;
@@ -252,6 +250,14 @@ var Player = function(){
 // self.preformAttack = function(){
 //
 // }
+// SUPER UPDATE //
+  var super_update = self.update;
+  self.update = function(){
+    super_update();
+    if (self.pressingRight || self.pressingLeft || self.pressingUp || self.pressingDown){
+      self.spriteAnimeCounter += .2;
+    }
+  }
   self.updatePosition = function(){
     // override test
       if (self.pressingRight){
@@ -298,7 +304,7 @@ var Player = function(){
 var doggyList = {};
 // create the doggy object
 var Dog = function(id,x,y,speedX,speedY,width,height){
-  var self = Actor("dog",id,x,y,speedX,speedY,width,height,20,1,Img.dog);
+  var self = Actor("dog",id,x,y,speedX,speedY,width,height,100,1,Img.dog);
   self.spriteFrameCols = 4;
   self.spriteSheetRows = 9;
   self.spriteAnimeCounter += .2;
@@ -326,12 +332,8 @@ var randomlyGenerateDog = function(){
   var y = Math.random() * canvas.height;
   var width = 50;
   var height = 50;
-
-// FIX THIS
-// var speedX = 3 + Math.random() * 5;
-// var speedY = 3 + Math.random() * 5;
-  var speedX = 1;
-  var speedY = 1;
+  var speedX = 1 + Math.random() * 3;
+  var speedY = 1 + Math.random() * 3;
   Dog(id,x,y,speedX,speedY,width,height);
 }
 /////////// DOG END //////////////
@@ -387,7 +389,8 @@ randomlyGenerateUpgrade = function(){
 var poopieList = {};
 // create poop object
 var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
-  var self = Actor("poopie",id,x,y,speedX,speedY,width,height,2,1,Img.poop);
+  var self = Actor("poopie",id,x,y,speedX,speedY,width,height,10,1,Img.poop);
+  self.okayToRemove = false;
   self.toBeRemoved = false;
   self.timer = 0;
   self.spriteFrameCols = 1;
@@ -401,19 +404,35 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
   // this is a game upgrade example
   self.combatType = combatType;
 //FIX THIS
-  // self.onDeath = function(){
-  // // set logic
-  //   self.toBeRemoved = true;
-  // }
+  self.onDeath = function(){
+  // set logic
+    self.okayToRemoved = true;
+    self.toBeRemoved = true;
+  }
 // FIX THIS
   var super_update = self.update;
   self.update = function(){
     super_update();
     self.timer++;
-    self.toBeRemoved = false;
     if (self.timer > 75){
-      self.toBeRemoved = true;
+      self.okayToRemove = true;
     }
+    // move ths to poope override
+    var isColliding = self.testCollision(player);
+      if (isColliding) {
+        if (player.poopArray.length < 5){
+          // push the object to the player array
+          player.poopArray.push(self);
+          self.onDeath();
+        }
+      }
+  }
+  self.draw = function(){
+    ctx.save();
+    var x = self.x - self.width / 2;
+    var y = self.y - self.height / 2;
+    ctx.drawImage(self.img,0,0,self.img.width,self.img.height,x,y,self.width,self.height);
+    ctx.restore();
   }
   poopieList[id] = self;
 }
@@ -425,28 +444,17 @@ var generatePoop = function(actor,overrideAngle){
   var y = actor.y;
   var width = 15;
   var height = 15;
-
-  // var postX = x.clientX - 8;
-  // var postY = y.clientY - 8;
-  // // adjust to relative to the object
-  // postX -= self.x;
-  // postY -= self.y;
-  // var angle = Math.atan2(postY,postX) / Math.PI * 180;
-
   var angle;
   if (overrideAngle !== undefined){
     angle = overrideAngle;
   } else {
     angle = actor.aimAngle;
   }
-  var speedX = .75;
-  var speedY = .75;
-
-
+  var speedX = 1;
+  var speedY = 1;
 // FIX THIS
-
-// var spdX = Math.cos(angle/100*Math.PI)*5;
-// var spdY = Math.sin(angle/100*Math.PI)*5;
+// var speedX = Math.cos(angle/100*Math.PI)*5;
+// var speedY = Math.sin(angle/100*Math.PI)*5;
   Poopy(id,x,y,speedX,speedY,width,height,actor.type);
 }
 /////////// POOPIE END //////////////
@@ -463,9 +471,8 @@ var Obstacle = function(category,id,x,y,speedX,speedY,width,height,img){
     super_update();
     var isColliding = self.testCollision(player);
       if (isColliding) {
-        // console.log("OUCH...hit an obstacle!!");
-        player.score -= 100;
-        player.hp -= 1;
+        player.score -= 1;
+
       }
   }
   obstacleList[id] = self;
@@ -510,12 +517,9 @@ var TrashCan = function(category,id,x,y,speedX,speedY,width,height,img){
     super_update();
     var isColliding = self.testCollision(player);
       if (isColliding) {
-        console.log("Yeah you are a nice citizen...!!");
-        player.score += 100;
-        player.hp += 2;
-        // for (key in player.poopBagArray) {
-        //
-        // }
+        player.poopArray = [];
+        player.score += 10;
+        player.hp += 1;
       }
   }
   trashCanList[id] = self;
@@ -642,7 +646,7 @@ var update = function(){
   // }
   // add an obstacle
   // if (Gameboard.frameCount % 5000 === 0){
-  //   randomlyGenerateUpgrade();
+  //   randomlyGenerateObstacle();
   // }
 
     //////// PLAYER ////////
@@ -687,7 +691,7 @@ var updateUpgrade = function(){
       if (isColliding) {
         if (upgradeList[key].category === "score"){
           console.log("YEAH...score++!!");
-          player.score += 100;
+          player.score += 5;
         }
         if (upgradeList[key].category === "speed") {
           console.log("YEAH... speed bonus!!");
@@ -714,16 +718,12 @@ var updateObstacle = function(){
 var updatePoopie = function(){
   for (var key in poopieList){
     poopieList[key].update();
-// move ths to poope override
-    var isColliding = player.testCollision(poopieList[key]);
-      if (isColliding) {
-        if (player.poopArray.length < 10){
-          player.score += 10;
-          player.poopArray.push(poopieList[key]);
-          // toBeRemoved logic
-          delete poopieList[key];
-        }
-      }
+  }
+  for (var key in poopieList){
+    if (poopieList[key].toBeRemoved){
+      // toBeRemoved logic
+      delete poopieList[key];
+    }
   }
 }
 
@@ -735,10 +735,10 @@ var updateTrashCan = function(){
 }
 
 var updateGameData = function(){
-  $("#game_level").textContent = Gameboard.level;
-  $("#player_score").textContent = player.score;
-  $("#player_health").textContent = player.hp;
-  $("#player_poo_count").textContent = player.poopBagArray.length;  
+  $("#game_level").text(Gameboard.level);
+  $("#player_score").text(player.score);
+  $("#player_health").text(player.hp);
+  $("#player_poo_count").text(player.fullpoopBags);
 }
 ///////////UPDATE//////////////
 
