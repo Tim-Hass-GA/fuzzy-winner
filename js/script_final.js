@@ -11,6 +11,7 @@
 // canvas object
 var canvas = document.getElementById("canvas");
 var ctx =  canvas.getContext("2d");
+ctx.font = '200px Arial';
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -264,7 +265,7 @@ var Player = function(){
     ////<<<< GAME OVER >>>>/////
     ////////////////////////////
     var timeSurvived = Date.now() - Gameboard.gameStartTime;
-    console.log("Your time is " + timeSurvived + " ms.");
+    Gameboard.gamePause = true;
     startNewGame();
   }
 // return self
@@ -726,21 +727,14 @@ setInterval(update, 40);
 ///////// document ready ///////
 $(document).ready(function(){
 
-  // for mouse move events
-  // window.addEventListener("mousemove", function(event){
-  //   mouse.x = event.x;
-  //   mouse.y = event.y;
-  //
-  // });
-
   // event listener for resize of the screen
-  // window.addEventListener("resize", function(){
-  //     // when the screen resizes redraw the image
-  //     canvas.width = window.innerWidth;
-  //     canvas.height = window.innerHeight;
-  //     // init();
-  //     update();
-  // });
+  window.addEventListener("resize", function(){
+      // when the screen resizes redraw the image
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // init();
+      update();
+  });
 
   // the "href" attribute of the modal trigger
   // must specify the modal ID
