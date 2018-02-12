@@ -1,5 +1,8 @@
 # Pooper Scooper
 
+![Game Screen Shot](/images/Game_Screen_Shot.png)
+Format: ![Game Screen Shot]
+
 ## About the game:
 Your dog Brian likes to have a clean area to run, play, and jump in
 the objective of the game is to keep the area clean, so you and
