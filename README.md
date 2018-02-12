@@ -34,6 +34,6 @@ UI
 - [ ] More styling  
 - [ ] Touch for Mobile
 
-[Link to Beta!]https://tim-hass-ga.github.io/fuzzy-winner/
+<!-- [Link to Beta!]https://tim-hass-ga.github.io/fuzzy-winner/ -->
 
 [Link to GitHub!]https://github.com/Tim-Hass-GA/hasstimh.github.io
