@@ -391,7 +391,7 @@ var Poopy = function(id,x,y,speedX,speedY,width,height,combatType){
     var isColliding = self.testCollision(player);
       if (isColliding) {
         // player cannot carry more than 5 objects
-        if (player.poopArray.length <= 5){
+        if (player.poopArray.length < 5){
           // push the object to the player array
           player.poopArray.push(self);
           self.onDeath();
