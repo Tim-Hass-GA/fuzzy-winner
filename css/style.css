@@ -3,54 +3,49 @@ html, body {
   padding: 0;
 }
 
-header {
+header.row {
   width: 100%;
   text-align: center;
   font-family: 'Monoton', cursive;
 }
 
-header div p, footer div p {
-  padding: 0 auto;
-  margin: 0 auto;
+.container{
+  border-radius: 1.5em;
+  border: 1em solid;
+}
+
+.container .row {
+  margin: 0;
+  width: 100%;
+  padding: 0;
+}
+
+main.row {
+  background-color: lightgreen;
 }
 
 .logo {
   margin: 0;
   padding-top: .25em;
-  font-size: 1.5em;
+  /* font-size: 1.5em; */
 }
 
 .game_info {
   padding: .02em;
-}
-
-.game_controls {
   margin: .2em 0;
+  border-radius: .5em;
 }
 
 .player_ {
   margin: 0;
   padding-top: .25em;
-  text-align: left;
-  font-size: 1.1em;
+  /* text-align: left; */
+  /* font-size: 1.1em; */
+  font-family: 'Monoton', cursive;
+  word-spacing: 1em;
 }
 
 .player_ ul, .player_ li{
-  font-size: .8em;
+  /* font-size: .8em; */
   padding: 0;
-}
-
-.container .row {
-  margin: 0;
-  /* width: 100%; */
-}
-
-.canvas {
-  background-color: lightgreen;
-  margin: 0;
-}
-
-footer .container {
-  text-align: left;
-  margin: 0;
 }

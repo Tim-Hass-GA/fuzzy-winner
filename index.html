@@ -3,50 +3,44 @@
   <head>
     <meta charset="utf-8">
     <title>Pooper Scooper</title>
+    <!--Import Google Icon Fonts-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     <!--Import Local CSS Stylesheet -->
     <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
   <body>
-    <div class="container">
-      <header id="header" class="blue-grey lighten-1 white-text">
-          <div class="row flow-text black">
-            <div class="col s5 m5 game_info ">
-              <h2 class="logo flow-text">Pooper Scooper</h2>
-            </div>
-            <div class="col s3 m3 game_controls game_info amber lighten-1 black-text">
-              <p class="flow-text">Game</p>
-              <p class="flow-text">Level: <span id="game_level">0</span></p>
-              <button type="button" class="purple waves-effect waves-light btn tooltipped flow-text hide-on-small-only" data-tooltip="Start New Game" data-position="top" onclick="startNewGame()">New Game</button>
-            </div>
-            <div id="player_" class="col s4 m4 player_ game_info">
-              <p>Player</p>
-              <ul class="player_">
-                <li>Score: <span id="player_score">0</span></li>
-                <li>Health: <span id="player_health">0</span></li>
-                <li>Full Bags: <span id="player_poo_count">0</span></li>
-              </ul>
-            </div>
-          </div>
+    <div class="container blue-grey ">
+      <header id="header" class="black lighten-1 white-text row">
+        <div class="col s8 game_info ">
+          <h2 class="logo">Pooper Scooper</h2>
+        </div>
+        <div class="col s4 game_info amber lighten-1 black-text">
+          <p >Game</p>
+          <p >Level: <span id="game_level">0</span></p>
+          <button type="button" class="purple waves-effect waves-light btn tooltipped flow-text hide-on-small-only" data-tooltip="Start New Game" data-position="top" onclick="startNewGame()">New Game</button>
+        </div>
       </header>
       <main class="row">
-          <canvas id="canvas" class="canvas col s12 l12"></canvas>
+        <canvas id="canvas" class="canvas col s12 l12"></canvas>
       </main>
-      <footer class="row ">
+      <footer class="row">
         <div class="col s12 l12">
           <div class="hide-on-med-and-up show-on-small">
-              <h5>Game Controls</h5>
               <p>Sorry not currently connected</p>
               <button type="button" name="button">LEFT</button>
               <button type="button" name="button">DOWN</button>
               <button type="button" name="button">UP</button>
               <button type="button" name="button">RIGHT</button>
+              <h5>Game Controls</h5>
+          </div>
+          <div class="hide-on-small">
+              <h5>Player</h5>
+              <p class="player_ white-text flow-text">Score: <span id="player_score">0</span> Health: <span id="player_health">0</span> Full Poop Bags: <span id="player_poo_count">0</span></p>
           </div>
           <div id="modal1" class="modal bottom-sheet">
             <div class="modal-content black white-text">

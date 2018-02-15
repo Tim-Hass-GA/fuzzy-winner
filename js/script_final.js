@@ -12,10 +12,11 @@
 var canvas = document.getElementById("canvas");
 var ctx =  canvas.getContext("2d");
 ctx.font = '200px Arial';
-// var headerHeight = window.innerHeight - $('header').outerHeight();
+var mainWidth = $('main').outerWidth();
+var mainHeight = $('main').outerHeight();
 // console.log(headerHeight);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = mainWidth;
+canvas.height = mainHeight;
 
 /////////// GAMEBOARD //////////////
 // set up the game board variables
@@ -748,8 +749,8 @@ $(document).ready(function(){
   // event listener for resize of the screen
   window.addEventListener("resize", function(){
       // when the screen resizes redraw the image
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = mainWidth;
+      canvas.height = mainHeight;
       // init();
       update();
   });

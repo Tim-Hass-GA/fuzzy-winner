@@ -17,14 +17,13 @@ Get 100 points and win the game.
 * jQuery
 * JavaScript
 
-
 ### Bug list:
 Code
 - [ ] Animations need some rework
 - [ ] More normalization of entity and actor behaviors
 - [ ] Implement a better End Game / Win Game
 UI
-- [ ] Resize of canvas
+- [x] Sudden resizing of canvas on screen size change
 - [ ] Responsiveness problem with button
 
 ### Incomplete Items:
@@ -45,6 +44,6 @@ UI
 - [ ] More styling  
 - [ ] Touch for Mobile
 
-<!-- [Link to Beta!]https://tim-hass-ga.github.io/fuzzy-winner/ -->
+[Link to Beta Pooper Scooper!]https://tim-hass-ga.github.io/fuzzy-winner/
 
-[Link to GitHub!]https://github.com/Tim-Hass-GA/hasstimh.github.io
+[Link to Tim's GitHub Portfolio]https://github.com/Tim-Hass-GA/hasstimh.github.io
