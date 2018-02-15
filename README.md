@@ -7,6 +7,8 @@ Your dog Brian likes to have a clean area to run, play, and jump in.
 The objective of the game is to keep the area clean, so you and
 Brian can have a nice place to have fun in.
 
+Get 100 points and win the game.
+
 ## Technologies Used:
 * HTML
 * Canvas
@@ -31,12 +33,14 @@ Code
 - [ ] Click event for player not currently in place
 - [ ] Improved user feedback for Game Wins / Losses
 UI
-- [ ] Keypad controls for mobile movement and click events
+- [ ] Keypad controls for mobile device (in place on small - not connected)
+- [ ] Mobile touch events
 
 ### Improvements:
 Code
-- [ ] More types of dogs
-- [ ] Logic for multiple types of attacks
+- [ ] Dog Variety
+- [ ] Logic for multiple attacks
+- [ ] More levels
 UI
 - [ ] More styling  
 - [ ] Touch for Mobile

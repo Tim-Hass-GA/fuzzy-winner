@@ -42,15 +42,12 @@ header div p, footer div p {
 
 .container .row {
   margin: 0;
-}
-
-div .row {
-  margin: 0;
   /* width: 100%; */
 }
 
 .canvas {
   background-color: lightgreen;
+  margin: 0;
 }
 
 footer .container {
