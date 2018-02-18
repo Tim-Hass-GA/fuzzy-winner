@@ -12,9 +12,11 @@
 var canvas = document.getElementById("canvas");
 var ctx =  canvas.getContext("2d");
 ctx.font = '200px Arial';
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+var mainWidth = $('main').outerWidth();
+var mainHeight = $('main').outerHeight();
+// console.log(headerHeight);
+canvas.width = mainWidth;
+canvas.height = mainHeight;
 
 /////////// GAMEBOARD //////////////
 // set up the game board variables
@@ -141,6 +143,9 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
   self.update = function(){
       super_update();
       self.stkCounter += self.stkSp;
+      //////////////////////////
+      //////// WIN / LOSS //////
+      //////////////////////////
       if (player.hp <= 0 || player.score > 100){
         self.onDeath();
       }
@@ -161,7 +166,7 @@ Actor = function(type,id,x,y,speedX,speedY,width,height,hp,stkSp,img){
             generatePoop(actor,angle);
             self.stkCounter = 0;
           }
-          // different scenarios
+          // different scenario
           // generatePoop(self,self.aimAngle - 5);
           // generatePoop(self,self.aimAngle);
           // generatePoop(self,self.aimAngle + 5);
@@ -265,8 +270,8 @@ var Player = function(){
     ////<<<< GAME OVER >>>>/////
     ////////////////////////////
     var timeSurvived = Date.now() - Gameboard.gameStartTime;
-    Gameboard.gamePause = true;
-    startNewGame();
+    gameOver();
+    // startNewGame();
   }
 // return self
     return self;
@@ -474,7 +479,8 @@ randomlyGenerateObstacle = function(){
 var trashCanList = {};
 var TrashCan = function(category,id,x,y,speedX,speedY,width,height,img){
   var self = Entity(category,id,x,y,speedX,speedY,width,height,img);
-  self.trashCanCapacity = 2;
+  // to be used later to control trashcan cap
+  // self.trashCanCapacity = 2;
   self.trashCanArray = [];
   // SUPER UPDATE //
   var super_update = self.update;
@@ -482,7 +488,9 @@ var TrashCan = function(category,id,x,y,speedX,speedY,width,height,img){
     super_update();
     var isColliding = self.testCollision(player);
       if (isColliding && player.poopArray.length > 0) {
-        player.score++;
+        player.poopArray.forEach(function(poop){
+          player.score += 3;
+        });
         player.poopArray = [];
       }
   }
@@ -538,7 +546,7 @@ document.onkeydown = function(event){
     player.pressingUp = true;
   }
   else if (event.keyCode === 80){
-    Gameboard.gamePause = !Gameboard.gamePause;
+    pauseGame();
   }
 }
 
@@ -567,14 +575,14 @@ document.onclick = function(event){
   // console.log("regular attack");
 
 // FIX ACTION
-  // dog.preformAttack();
+  // player.preformAttack();
 }
 
-// hide right click
+// hide right click default action
 document.oncontextmenu = function(event){
 
 // FIX ACTION
-  // dog.preformSpecialAttack();
+  // player.preformSpecialAttack();
   event.preventDefault();
 }
 ///////////GAME EVENT FUNCTIONS END//////////////
@@ -583,7 +591,7 @@ document.oncontextmenu = function(event){
 // update game
 var update = function(){
   if (Gameboard.gamePause) {
-    ctx.fillText("PAUSED",canvas.width/2,canvas.height/2);
+    ctx.fillText("GAME PAUSED",canvas.width/2,canvas.height/2);
     return;
   }
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -639,15 +647,15 @@ var updateUpgrade = function(){
     var isColliding = player.testCollision(upgradeList[key]);
       if (isColliding) {
         if (upgradeList[key].category === "score"){
-          console.log("YEAH...score++!!");
+          // console.log("YEAH...score++!!");
           player.score += 10;
         }
         if (upgradeList[key].category === "speed") {
-          console.log("YEAH... speed bonus!!");
+          // console.log("YEAH... speed bonus!!");
           player.stkSp += 3;
         }
         if (upgradeList[key].category === "health") {
-          console.log("YEAH... health bonus!!");
+          // console.log("YEAH... health bonus!!");
           player.hp += 3;
         }
         // delete the upgrade
@@ -693,6 +701,17 @@ var pauseGame = function(){
   Gameboard.gamePause = !Gameboard.gamePause;
 }
 
+var gameOver = function(){
+  Gameboard.gamePause = true;
+  // fire modal to display end result
+  // model fires startNewGame()
+  doggyList = {};
+  upgradesList = {};
+  obstacleList = {};
+  poopieList = {};
+  trashCanList = {};
+}
+
 /////////// START GAME //////////////
 var startNewGame = function(){
   Gameboard.gamePause = false;
@@ -730,8 +749,8 @@ $(document).ready(function(){
   // event listener for resize of the screen
   window.addEventListener("resize", function(){
       // when the screen resizes redraw the image
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = mainWidth;
+      canvas.height = mainHeight;
       // init();
       update();
   });
